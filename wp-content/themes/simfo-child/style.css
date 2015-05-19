@@ -23,11 +23,13 @@ Version:        0.1.0
 #crellyslider-1 .cs-next { background-image: url("img/slideshow-right.png"); width: 49px; height: 67px; background-position: 0 0; right: 10px;}
 #crellyslider-1 .cs-previous { background-image: url("img/slideshow-left.png"); width: 49px; height: 67px; left: 10px; }
 
-.ella-wrapper { background: url("img/widgets-border.png") no-repeat left top; background-size: 100% 100%; padding: 1px; width: 100%; height: auto; position: relative; }
+.ella-wrapper { background: url("img/widgets-border.png") no-repeat left top; background-size: 100% 100%; padding: 1px; width: 100%; height: auto; position: relative; margin-bottom: 20px; }
 .widget-back-image { width: 100%; height: auto; z-index: 10; }
 .widget-back-image img { width: 100%; height: auto; display: block; z-index: 20; }
 .widget-text { width: 100%; padding: 6px 28px; max-width: 430px; }
 .widget-text.over-image { position: absolute; top: 0; left: 0; z-index: 50; }
+
+.last:after { display: block; clear: both; content: ''; }
 
 #ella-footer .top-footer { height: 140px; padding-top: 20px; }
 #ella-footer .top-footer > div { background: url("img/footer-separator.png") no-repeat left top; height: inherit; }
