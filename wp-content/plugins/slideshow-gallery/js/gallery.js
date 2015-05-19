@@ -16,7 +16,7 @@ TINY.slideshow=function(n){
 
 TINY.slideshow.prototype={
 	init:function(s,z,b,f,q){
-		s=tid(s);
+		this.s=s=tid(s);
 		var m= tag('li',s), i=0, w=0;
 		this.l=m.length;
 		this.q=tid(q);
@@ -70,11 +70,12 @@ TINY.slideshow.prototype={
 		this.auto?this.is(0,0):this.is(0,1);
 	},
 	mv:function(d,c){
+		this.direction = (d == 1) ? 'f' : 'b';
 		var t=this.c+d;
 		this.c=t=t<0?this.l-1:t>this.l-1?0:t;
 		this.pr(t,c)
 	},
-	pr:function(t,c){
+	pr:function(t,c){		
 		clearTimeout(this.lt);
 		if(c){
 			clearTimeout(this.at)
@@ -92,13 +93,18 @@ TINY.slideshow.prototype={
 		}
 		
 		var i=new Image();
-		i.style.opacity=0;
-		i.style.filter='alpha(opacity=0)';
+		if (this.effect == "fade") {
+			//i.style.opacity=0;
+			//i.style.filter='alpha(opacity=0)';
+			i.style.display = 'none';
+		}
+		
 		this.i=i;
 		i.onload=new Function(this.n+'.le('+s+','+c+')');
 		string = this.a[s].p;
 		string = string.replace(/&amp;/g, '&');
 		i.src = string;
+		i.id = this.imagesid + 'img' + s;
 		if(this.thumbs){
 			var a= tag('img',this.p), l=a.length, x=0;
 			for(x;x<l;x++){
@@ -106,30 +112,121 @@ TINY.slideshow.prototype={
 			}
 		}
 	},
-	le:function(s,c){
+	mi:function(oi, i) {		
+		opos = jQuery(oi).position();
+		oposl = opos.left;
+		opost = opos.top;
+		ow = jQuery(oi).width();
+		oh = jQuery(oi).height();
+		
+		pos = jQuery(i).position();
+		posl = pos.left;
+		post = pos.top;
+		w = jQuery(i).width();
+		h = jQuery(i).height();
+		
+		speed = (this.imgSpeed * 100);
+			
+		if (jQuery(oi).attr('src') != jQuery(i).attr('src')) {
+			if (this.direction == "f") {	
+				if (this.slide_direction == "tb") {
+					jQuery(i).css('top', (h + opost)).animate({
+					"top": "0px"
+					}, {
+						duration: speed,
+						easing: this.easing,
+						step: function(now, fx) {
+							jQuery(oi).css('top', '-' + (oh - now) + 'px');
+						}
+					});
+				} else {
+					jQuery(i).css('left', (w + oposl)).animate({"left": "0px"}, {
+						duration: speed,
+						easing: this.easing,
+						step: function(now, fx) {
+							jQuery(oi).css('left', '-' + (ow - now) + 'px');
+						}
+					});	
+				}
+			} else if (this.direction == "b") {	
+				if (this.slide_direction == "tb") {
+					newpos = -(w - opost);							
+					jQuery(i).css('top', newpos).animate({"top": "0px"}, {
+						duration: speed,
+						easing: this.easing,
+						step: function(now, fx) {
+							jQuery(oi).css('top', '+' + (oh + now) + 'px');
+						}
+					});
+				} else {
+					newpos = -(w - oposl);							
+					jQuery(i).css('left', newpos).animate({"left": "0px"}, {
+						duration: speed,
+						easing: this.easing,
+						step: function(now, fx) {
+							jQuery(oi).css('left', '+' + (ow + now) + 'px');
+						}
+					});
+				}
+			}
+		}
+	},
+	oi:function(oi, i) {
+		speed = (this.imgSpeed * 100);
+		
+		jQuery(oi).fadeOut({
+			duration: speed,
+			easing: this.easing
+		});
+		
+		jQuery(i).fadeIn({
+			duration: speed,
+			easing: this.easing
+		});
+	},
+	le:function(s,c){		
 		this.f.appendChild(this.i);
 		var w=this.o-parseInt(this.i.offsetWidth);
 		if(w>0){
 			var l=Math.floor(w/2);
 		}
-		TINY.alpha.set(this.i,100,this.imgSpeed);
+		
+		var m= tag('img',this.f);
+		if (this.effect == "fade") {
+			//TINY.alpha.set(this.i,100,this.imgSpeed);
+			this.oi(m[(m.length - 2)], this.i);
+		} else {
+			if (m.length > 1) {
+				this.mi(m[(m.length - 2)], this.i);
+			}	
+		}
+		
 		var n=new Function(this.n+'.nf('+s+')');
 		this.lt=setTimeout(n,this.imgSpeed*100);
 		if(!c || (this.auto == true && this.alwaysauto == true)) {
 			this.at=setTimeout(new Function(this.n+'.mv(1,0)'),this.speed*1000)
 		}
+		
+		if (this.autoheight == true) {
+			TINY.height.set(this.f.parentNode,(jQuery(this.i).height()),this.infoSpeed/2,-1);
+		}
+		
 		if(this.a[s].l != ""){			
 			var baseURL = this.a[s].l;
 			var urlString = /\.jpg$|\.jpeg$|\.png$|\.gif$|\.bmp$/;
 	   		var urlType = baseURL.toLowerCase().match(urlString);
+	   		var unique= jQuery(this.s).attr('id');			
 
 			if (this.imagesthickbox == "true" && (urlType == '.jpg' || urlType == '.jpeg' || urlType == '.png' || urlType == '.gif' || urlType == '.bmp')) {			
-				this.q.onclick = new Function('jQuery.colorbox({href:"' + this.a[s].l + '",maxWidth:"90%",maxHeight:"90%",title:"' + this.a[s].t + '"})');
+				//this.q.onclick = new Function('jQuery.colorbox({href:"' + this.a[s].l + '",maxWidth:"90%",maxHeight:"90%",title:"' + this.a[s].t + '"})');
+				this.q.onmouseover = new Function('this.className="' + this.linkclass + '"; this.href = "' + this.a[s].l + '";');
+				var uniqueimglinkid = jQuery('a[href="' + this.a[s].l + '"]').attr('id');
+				this.q.onclick = new Function('jQuery(".colorbox").colorbox({rel:"' + unique + 'overlay", maxWidth:"90%", maxHeight:"90%"}); jQuery("#' + uniqueimglinkid + '").click(); return false;');
 			} else {
-				this.q.onclick = new Function('window.open("' + this.a[s].l + '","' + this.a[s].tg + '")');
+				this.q.onmouseover = new Function('this.className="' + this.linkclass + '";');
+				this.q.onclick = new Function('window.open("' + this.a[s].l + '","' + this.a[s].tg + '"); return false;');
 			}
 			
-			this.q.onmouseover = new Function('this.className="' + this.linkclass + '"');
 			this.q.onmouseout = new Function('this.className=""');
 			this.q.style.cursor = 'pointer';
 		}else{
@@ -137,7 +234,7 @@ TINY.slideshow.prototype={
 			this.q.style.cursor='default';
 		}
 		var m= tag('img',this.f);
-		if(m.length >= 2){
+		if(m.length > 10){
 			this.f.removeChild(m[0])
 		}
 	},

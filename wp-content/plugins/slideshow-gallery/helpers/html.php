@@ -23,6 +23,18 @@ class GalleryHtmlHelper extends GalleryPlugin {
 		}
 	}
 	
+	function is_image($filename = null) {
+		if (!empty($filename)) {
+			if ($filetype = wp_check_filetype($filename)) {
+				if (!empty($filetype['ext']) && ($filetype['ext'] == "bmp" || $filetype['ext'] == "png" || $filetype['ext'] == "jpg" || $filetype['ext'] == "jpeg")) {
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
+	
 	public static function uploads_path() {
 		if ($upload_dir = wp_upload_dir()) {		
 			return str_replace("\\", "/", $upload_dir['basedir']);
@@ -278,7 +290,15 @@ class GalleryHtmlHelper extends GalleryPlugin {
 	
 	function strip_ext($filename = null, $return = 'ext') {
 		if (!empty($filename)) { 
-			$extArray = preg_split("/[\.]/", $filename); 
+			$pathinfo = pathinfo($filename);
+			
+			if ($return == "ext") {
+				return strtolower($pathinfo['extension']);
+			} else {
+				return $pathinfo['filename'];
+			}
+			
+			/*$extArray = preg_split("/[\.]/", $filename); 
 			
 			if ($return == 'ext') {
 				$p = count($extArray) - 1; 
@@ -288,7 +308,7 @@ class GalleryHtmlHelper extends GalleryPlugin {
 				$p = count($extArray) - 2;
 				$filename = $extArray[$p];
 				return $filename;
-			}
+			}*/
 		}
 		
 		return false;
@@ -316,7 +336,7 @@ class GalleryHtmlHelper extends GalleryPlugin {
 		return (object) $array;
 	}
 	
-	function sanitize($string = '', $sep = '-') {
+	function sanitize($string = null, $sep = '-') {
 		if (!empty($string)) {
 			$string = preg_replace("/[^0-9a-z" . $sep . "]/si", "", strtolower(str_replace(" ", $sep, $string)));
 			$string = preg_replace("/" . $sep . "[" . $sep . "]*/i", $sep, $string);

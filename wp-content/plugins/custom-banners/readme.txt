@@ -2,8 +2,8 @@
 Contributors: ghuger, richardgabriel
 Tags: banners, ads, rotating banners, custom banners, custom ads, custom rotating banners, random banners, random rotating banners
 Requires at least: 3.8
-Tested up to: 4.0
-Stable tag: 1.3.3
+Tested up to: 4.2.1
+Stable tag: 1.5.1
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -11,6 +11,12 @@ Custom Banners provides a simple interface to upload several banners and show a 
 
 == Description ==
 Custom Banners is a WordPress plugin that allows you to easily manage several banners (ads) and display them on the front end.
+
+= Upgrade to Pro for For Advanced Features and Support =
+
+The GoldPlugins team does not provide direct support for the Custom Banners plugin on the WordPress.org forums. One on one email support is available to people who have purchased Custom Banners Pro only. Custom Banners adds the ability to create slideshows from your banners, and it supports all kind of cool transitions. You should [upgrade today!](http://goldplugins.com/our-plugins/custom-banners/upgrade-to-custom-banners-pro/?utm_source=wp&utm_campaign=desc_upgrade1 "Upgrade to Custom Banners Pro")
+
+[Upgrade To Custom Banners Pro](http://goldplugins.com/our-plugins/custom-banners/upgrade-to-custom-banners-pro/?utm_source=wp&utm_campaign=desc_upgrade2)
 
 **Create Banners Once, and Reuse Them Throughout Your Website**
 
@@ -127,8 +133,28 @@ No worries!  This probably means the image you are using doesn't match the size 
 3. This is the List of Banner Groups - from here you can Create, Edit, or Delete a Banner Group.
 4. This is the Single Banner Widget.  You can use this widget to output and control a single banner anywhere you have a widget region on your website.
 5. This is the Rotating Banner Widget.  You can use this widget to output and control a rotating banner anywhere you have a widget region on your website.
+6. This is the Basic Options Page.  You can use this page to control various global options, such as the Height and Width of the Banner.
+7. This is the Style Options Page, for Pro Users.  You can use this page to control the size, style, and colors of the fonts, caption, borders, and buttons.
+8. This is the Help & Settings Page.  You can use this page for instructions on how to use the plugin.
 
 == Changelog ==
+
+= 1.5.1 =
+* Admin UI updates, bug fixes
+
+= 1.5.0 =
+* Adds many new customization options (free and Pro)
+
+= 1.4.1 =
+* Repositions metaboxes, including Featured Image and Editor, into more usable positions
+
+= 1.4 =
+* Updates Admin interface; adds Settings links to Plugin List.
+* Adds new option, Open Link in New Window, to allow the Banner CTA / Link to open in a new window when clicked.
+* Adds metabox to the Add/Edit Banner screen sidebar with the current banner's shortcode.
+
+= 1.3.4 =
+* Update compatibility with WordPress 4.1.1
 
 = 1.3.3 =
 * Show more than 5 banners in single banner widget banner select drop down menu.
@@ -185,4 +211,4 @@ No worries!  This probably means the image you are using doesn't match the size 
 
 == Upgrade Notice ==
 
-* 1.3.3: Update available!
+* 1.5.1: Admin UI updates, bug fixes

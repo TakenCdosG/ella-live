@@ -3,6 +3,7 @@
 	position: relative;
 	white-space: nowrap;
 	overflow: hidden;
+	line-height: 1.5;
 }
 
 .crellyslider > .cs-preloader {
@@ -60,48 +61,44 @@
 	position: absolute;
 }
 
-.crellyslider > .cs-slides > .cs-slide > img {
+.crellyslider > .cs-slides > .cs-slide > img,
+.crellyslider > .cs-slides > .cs-slide > a > img {
 	max-width: none !important;
 }
 
-.crellyslider > .cs-slides > .cs-slide a {
+.crellyslider > .cs-slides > .cs-slide a,
+.crellyslider > .cs-slides > .cs-slide > a > img {
 	text-decoration: none;
-}
-
-.crellyslider > .cs-slides > .cs-slide > a img {
-	max-width: 100% !important;
-	height: auto;
+	outline: none;
+	border: none;
 }
 
 .crellyslider > .cs-controls {
 	position: absolute;
 	width: 100%;
 	top: 50%;
-	margin-top: -19px;
+	margin-top: -9px;
 	z-index: 999;
 }
 
 .crellyslider > .cs-controls > .cs-previous,
 .crellyslider > .cs-controls > .cs-next {
 	display: block;
-	width: 45px;
-	height: 63px;
+	width: 18px;
+	height: 18px;
 	position: absolute;
 	cursor: pointer;
-	background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFoAAAA/AQMAAABaX02oAAAABlBMVEUAAAD///+l2Z/dAAAAeUlEQVQoz2MYskABiBlhnAIgZm6Acn4AMfsBCJvxD5DgfwDhMINlPgAJMA0TAauAqAUDebDefxCOPdjUeginHiYEVgBTDNYKNQZiDdQCKAkRg8rDVSNk0PUgTEO3B+ECTLchXI3wD4ZPEWGAGTqIcEOEKEpYjwIwAACJei8XtWCk0gAAAABJRU5ErkJggg==');
+	background-image: url('../images/controls.png');
 }
-
-
-
 
 .crellyslider > .cs-controls > .cs-previous {
 	background-position: 0 0;
-	left: 10px;
+	left: 30px;
 }
 
 .crellyslider > .cs-controls > .cs-next {
-	background-position: 45px 0;
-	right: 10px;
+	background-position: 18px 0;
+	right: 30px;
 }
 
 .crellyslider > .cs-navigation {

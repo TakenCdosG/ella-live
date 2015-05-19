@@ -1,8 +1,8 @@
 <?php
 
-class GalleryPlugin {
+class GalleryPlugin extends GalleryCheckinit {
 
-	var $version = '1.5';
+	var $version = '1.5.3';
 	var $plugin_name;
 	var $plugin_base;
 	var $pre = 'Gallery';
@@ -44,6 +44,8 @@ class GalleryPlugin {
 			error_reporting(0);
 			@ini_set('display_errors', 0);
 		}
+		
+		$this -> ci_initialize();
 		
 		return true;
 	}
@@ -150,13 +152,13 @@ class GalleryPlugin {
 				$version = "1.4.8";
 			}
 			
-			if (version_compare($cur_version, "1.5") < 0) {
+			if (version_compare($cur_version, "1.5.3") < 0) {
 				$this -> initialize_options();
 				
 				$query = "ALTER TABLE `" . $this -> Slide -> table . "` CHANGE `type` `type` ENUM('media','file','url') NOT NULL DEFAULT 'media'";
 				$wpdb -> query($query);
 				
-				$version = "1.5";
+				$version = "1.5.3";
 			}
 		
 			//the current version is older.
@@ -174,22 +176,26 @@ class GalleryPlugin {
 			'layout'			=>	"responsive",
 			'width'				=>	"450",
 			'height'			=>	"250",
-			'resheight'			=>	"30",
+			'resheight'			=>	"50",
 			'resheighttype' 	=>  "%",
 			'border'			=>	"1px solid #CCCCCC",
 			'background'		=>	"#000000",
 			'infobackground'	=>	"#000000",
 			'infocolor'			=>	"#FFFFFF",
-			'resizeimages'		=>	"N",
+			'resizeimages'		=>	"Y",
 		);
 		
+		$this -> add_option('existing', 1);		
 		$this -> add_option('resizeimagescrop', "Y");
 		$this -> update_option('imagespath', $this -> Html -> uploads_url() . '/' . $this -> plugin_name . '/');
 		$this -> add_option('styles', $styles);
-		$this -> add_option('fadespeed', 10);
+		$this -> add_option('effect', "fade");
+		$this -> add_option('easing', "swing");
+		$this -> add_option('slide_direction', "lr");
+		$this -> add_option('fadespeed', 20);
 		$this -> add_option('shownav', "Y");
 		$this -> add_option('navopacity', 25);
-		$this -> add_option('navhover', 70);
+		$this -> add_option('navhover', 75);
 		$this -> add_option('information', "Y");
 		$this -> add_option('infospeed', 10);
 		$this -> add_option('infohideonmobile', 1);
@@ -205,6 +211,7 @@ class GalleryPlugin {
 		$this -> add_option('autospeed', 10);
 		$this -> add_option('alwaysauto', "true");
 		$this -> add_option('imagesthickbox', "N");
+		$this -> add_option('jsoutput', "perslideshow");
 		
 		$ratereview_scheduled = $this -> get_option('ratereview_scheduled');
 		if (empty($ratereview_scheduled)) {
@@ -212,6 +219,8 @@ class GalleryPlugin {
 			wp_schedule_single_event(strtotime("+14 days"), 'slideshow_ratereviewhook', array(14));
 			wp_schedule_single_event(strtotime("+30 days"), 'slideshow_ratereviewhook', array(30));
 			wp_schedule_single_event(strtotime("+60 days"), 'slideshow_ratereviewhook', array(60));
+			wp_schedule_single_event(strtotime("+180 days"), 'slideshow_ratereviewhook', array(180));
+			wp_schedule_single_event(strtotime("+360 days"), 'slideshow_ratereviewhook', array(360));
 			$this -> update_option('ratereview_scheduled', true);
 		}
 		
@@ -313,8 +322,6 @@ class GalleryPlugin {
 		</script>
 		
 		<?php
-		
-		flush();
 	}
 	
 	function paginate($model = null, $fields = '*', $sub = null, $conditions = null, $searchterm = null, $per_page = 10, $order = array('modified', "DESC")) {
@@ -324,7 +331,7 @@ class GalleryPlugin {
 			global $paginate;
 			$paginate = $this -> vendor('Paginate');
 			$paginate -> table = $this -> {$model} -> table;
-			$paginate -> sub = (empty($sub)) ? $this -> {$model} -> controller : $sub;
+			$paginate -> sub = (empty($sub)) ? $this -> sections -> {$this -> {$model} -> controller} : $sub;
 			$paginate -> fields = (empty($fields)) ? '*' : $fields;
 			$paginate -> where = (empty($conditions)) ? false : $conditions;
 			$paginate -> searchterm = (empty($searchterm)) ? false : $searchterm;
@@ -465,6 +472,7 @@ class GalleryPlugin {
 		} else {
 			wp_enqueue_script($this -> plugin_name, plugins_url() . '/' . $this -> plugin_name . '/js/gallery.js', null, '1.0');
 			wp_enqueue_script('colorbox', plugins_url() . '/' . $this -> plugin_name . '/js/colorbox.js', array('jquery'), '1.3.19');
+			wp_enqueue_script('jquery-effects-core');
 		}
 		
 		return true;
@@ -482,7 +490,7 @@ class GalleryPlugin {
 			
 			foreach ($styles as $skey => $sval) {			
 				$css_url .= $skey . '=' . urlencode($sval);
-				if ($s < count($styles)) { $css_url .= '&'; }
+				if ($s < count($styles)) { $css_url .= '&amp;'; }
 				$s++;
 			}
 		}
@@ -505,6 +513,8 @@ class GalleryPlugin {
 		
 		$colorbox_src = plugins_url() . '/' . $this -> plugin_name . '/css/colorbox.css';
 		wp_enqueue_style('colorbox', $colorbox_src, null, "1.3.19", "all");
+		$font_src = plugins_url() . '/' . $this -> plugin_name . '/views/default/css/font.css';
+		wp_enqueue_style('slideshow-font', $font_src, null, null, "all");
 	
 		return true;
 	}
@@ -564,10 +574,15 @@ class GalleryPlugin {
 	}
 	
 	function check_tables() {
+		global $wpdb;
+		
 		if (!empty($this -> models)) {
 			foreach ($this -> models as $model) {
 				$this -> check_table($model);
 			}
+			
+			$query = "ALTER TABLE `" . $this -> Slide -> table . "` CHANGE `type` `type` ENUM('media','file','url') NOT NULL DEFAULT 'media'";
+			$wpdb -> query($query);
 		}
 		
 		return;
@@ -853,7 +868,6 @@ class GalleryPlugin {
 					$data = ob_get_clean();					
 					return $data;
 				} else {
-					flush();
 					return true;
 				}
 			}

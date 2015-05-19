@@ -3,21 +3,21 @@ Contributors:  fabiorino
 Donate link: http://fabiorino1.altervista.org/projects/crellyslider/contribute-and-support/
 Tags: slider, slides, animations, drag & drop, drag and drop, layers, elements
 Requires at least: 3.6.0
-Tested up to: 4.0
-Stable tag: 0.8.0
-License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Tested up to: 4.2
+Stable tag: 0.8.2
+License: MIT
+License URI: http://opensource.org/licenses/MIT
 
 The first FREE WP Slider with elements animations.
 
 == Description ==
 
+= Crelly Slider has Layers Animations, a Drag and Drop Builder, is Free, Responsive and Easy to Use =
+<br />
 Crelly Slider is a Free / Open Source WordPress slider with a powerful Drag & Drop Builder. You can add Texts and Images using animations and transitions. It's perfect to display your creative content in posts and pages. With it's tons of features, Crelly Slider is the best free solution for your online WebSite.
 <br />
 <br />
 <a href="http://fabiorino1.altervista.org/projects/crellyslider/">Official WebSite (with live demo)</a>
-<br />
-<a href="http://fabiorino1.altervista.org/projects/crellyslider/documentation">Documentation</a>
 <br />
 = User Friendly Admin Panel =
 Crelly Slider does not require any Coding Knowledge. With the simple admin panel you will be able to create the sliders in the easiest way. Upload images with the default WordPress interface or choose colors using the picker.
@@ -54,6 +54,15 @@ You can find the documentation <a href="http://fabiorino1.altervista.org/project
 3. Unlimited sliders
 
 == Changelog ==
+
+= 0.8.2 =
+* Fixed: broken admin layout on Firefox (<a href="https://github.com/fabiorino/crelly-slider/pull/5">Thanks eduardoarandah</a>)
+* Crelly Slider is now translated in Spanish (<a href="https://github.com/eduardoarandah/crelly-slider/commit/3b7d49b63d9dbe60c420669edea898de34cd720f">Again, thanks eduardoarandah</a>) and in Italian!
+* Do you want to translate the plugin in your language? <a href="http://fabiorino1.altervista.org/projects/crellyslider/documentation/#translate">Check the documentation</a>
+
+= 0.8.1 =
+* Fixed: padding broken in IE8
+* Fixed: background images with a long name weren't stored correctly into the database
 
 = 0.8.0 =
 * Changed: by default, elements out animations start before the slide out animation. In this way, they result more visible, therefore better than before. The option is customizable for each element

@@ -26,12 +26,12 @@ $thumbopacity = $this -> get_option('thumbopacity');
 					<?php $thumbnail_link = wp_get_attachment_image_src($slide -> ID, 'thumbnail', false); ?>
 					<?php if ($options['showthumbs'] == "true") : ?>
 						<?php if (!empty($slide -> guid)) : ?>
-							<a href="<?php echo $slide -> guid; ?>" target="_self" title="<?php echo esc_attr(__($slide -> post_title)); ?>"><img src="<?php echo $this -> Html -> bfithumb_image_src($full_image_url, $this -> get_option('thumbwidth'), $this -> get_option('thumbheight'), 100); ?>" alt="<?php echo $this -> Html -> sanitize(__($slide -> post_title)); ?>" /></a>
+							<a href="<?php echo $slide -> guid; ?>" id="<?php echo $unique; ?>imglink<?php echo $slide -> ID; ?>" <?php if ($this -> Html -> is_image($slide -> guid)) : ?>class="colorbox" rel="slideshow<?php echo $unique; ?>overlay"<?php endif; ?> target="_self" title="<?php echo esc_attr(__($slide -> post_title)); ?>"><img src="<?php echo $this -> Html -> bfithumb_image_src($full_image_url, $this -> get_option('thumbwidth'), $this -> get_option('thumbheight'), 100); ?>" alt="<?php echo $this -> Html -> sanitize(__($slide -> post_title)); ?>" /></a>
 						<?php else : ?>
-							<a><img src="<?php echo $this -> Html -> bfithumb_image_src($full_image_url, $this -> get_option('thumbwidth'), $this -> get_option('thumbheight'), 100); ?>" alt="<?php echo $this -> Html -> sanitize(__($slide -> post_title)); ?>" /></a>
+							<a id="<?php echo $unique; ?>imglink<?php echo $slide -> ID; ?>" <?php if ($this -> Html -> is_image($full_image_url)) : ?>class="colorbox" rel="slideshow<?php echo $unique; ?>overlay"<?php endif; ?>><img src="<?php echo $this -> Html -> bfithumb_image_src($full_image_url, $this -> get_option('thumbwidth'), $this -> get_option('thumbheight'), 100); ?>" alt="<?php echo $this -> Html -> sanitize(__($slide -> post_title)); ?>" /></a>
 						<?php endif; ?>
 					<?php else : ?>
-						<a href="<?php echo $slide -> guid; ?>" title="<?php echo __($slide -> post_title); ?>"></a>
+						<a id="<?php echo $unique; ?>imglink<?php echo $slide -> ID; ?>" <?php if ($this -> Html -> is_image($slide -> guid)) : ?>class="colorbox" rel="slideshow<?php echo $unique; ?>overlay"<?php endif; ?> href="<?php echo $slide -> guid; ?>" title="<?php echo __($slide -> post_title); ?>"></a>
 					<?php endif; ?>
 				</li>
 				<?php wp_reset_postdata(); ?>
@@ -41,7 +41,7 @@ $thumbopacity = $this -> get_option('thumbopacity');
 			<?php foreach ($slides as $slide) : ?>
 				<?php setup_postdata($slide); ?>
 				<li>
-					<h3 ><a href="<?php echo get_permalink($slide -> ID); ?>"><?php echo stripslashes(__($slide -> post_title)); ?></a></h3>
+					<h3 style="opacity:70;"><a target="_self" href="<?php echo get_permalink($slide -> ID); ?>"><?php echo stripslashes(__($slide -> post_title)); ?></a></h3>
 					<?php $full_image_href = wp_get_attachment_image_src(get_post_thumbnail_id($slide -> ID), 'full', false); ?>
 					<?php $full_image_path = get_attached_file(get_post_thumbnail_id($slide -> ID)); ?>
 					<?php $full_image_url = wp_get_attachment_url(get_post_thumbnail_id($slide -> ID)); ?>										
@@ -56,10 +56,10 @@ $thumbopacity = $this -> get_option('thumbopacity');
 						<?php if (!empty($slide -> guid)) : ?>
 							<a href="<?php echo $slide -> guid; ?>" target="_self" title="<?php echo esc_attr(__($slide -> post_title)); ?>"><img src="<?php echo $this -> Html -> bfithumb_image_src($full_image_url, $this -> get_option('thumbwidth'), $this -> get_option('thumbheight'), 100); ?>" alt="<?php echo $this -> Html -> sanitize(__($slide -> post_title)); ?>" /></a>
 						<?php else : ?>
-							<a><img src="<?php echo $this -> Html -> bfithumb_image_src($full_image_url, $this -> get_option('thumbwidth'), $this -> get_option('thumbheight'), 100); ?>" alt="<?php echo $this -> Html -> sanitize(__($slide -> post_title)); ?>" /></a>
+							<a id="<?php echo $unique; ?>imglink<?php echo $slide -> ID; ?>" <?php if ($this -> Html -> is_image($full_image_url)) : ?>class="colorbox" rel="slideshow<?php echo $unique; ?>overlay"<?php endif; ?>><img src="<?php echo $this -> Html -> bfithumb_image_src($full_image_url, $this -> get_option('thumbwidth'), $this -> get_option('thumbheight'), 100); ?>" alt="<?php echo $this -> Html -> sanitize(__($slide -> post_title)); ?>" /></a>
 						<?php endif; ?>
 					<?php else : ?>
-						<a href="<?php echo $slide -> guid; ?>" title="<?php echo __($slide -> post_title); ?>"></a>
+						<a href="<?php echo $slide -> guid; ?>" target="_self" title="<?php echo __($slide -> post_title); ?>"></a>
 					<?php endif; ?>
 				</li>
 				<?php wp_reset_postdata(); ?>
@@ -88,7 +88,7 @@ $thumbopacity = $this -> get_option('thumbopacity');
 			<?php endforeach; ?>
 		<?php else : ?>
 			<!-- From all slides or gallery slides -->
-			<?php foreach ($slides as $slide) : ?>		
+			<?php foreach ($slides as $slide) : ?>				
 				<li>
 					<h3 style="opacity:<?php echo (!empty($slide -> iopacity)) ? ($slide -> iopacity) : 70; ?>;"><?php echo (!empty($slide -> showinfo) && ($slide -> showinfo == "both" || $slide -> showinfo == "title")) ? __($slide -> title) : ''; ?></h3>
 					<?php if ($options['layout'] != "responsive" && $options['resizeimages'] == "true" && $options['width'] != "auto") : ?>
@@ -101,7 +101,7 @@ $thumbopacity = $this -> get_option('thumbopacity');
 						<?php if ($slide -> uselink == "Y" && !empty($slide -> link)) : ?>
 							<a href="<?php echo $slide -> link; ?>" title="<?php echo esc_attr(__($slide -> title)); ?>" target="_<?php echo $slide -> linktarget; ?>"><img src="<?php echo $this -> Html -> bfithumb_image_src($slide -> image_path, $this -> get_option('thumbwidth'), $this -> get_option('thumbheight'), 100); ?>" alt="<?php echo $this -> Html -> sanitize(__($slide -> title)); ?>" /></a>
 						<?php elseif ($options['imagesoverlay'] == "true") : ?>
-							<a href="<?php echo $slide -> image_path; ?>" target="_<?php echo $slide -> linktarget; ?>" title="<?php echo __($slide -> title); ?>"><img src="<?php echo $this -> Html -> bfithumb_image_src($slide -> image_path, $this -> get_option('thumbwidth'), $this -> get_option('thumbheight'), 100); ?>" alt="<?php echo $this -> Html -> sanitize(__($slide -> title)); ?>" /></a>
+							<a href="<?php echo $slide -> image_path; ?>" id="<?php echo $unique; ?>imglink<?php echo $slide -> id; ?>" <?php if ($this -> Html -> is_image($slide -> image_path)) : ?>class="colorbox" rel="slideshow<?php echo $unique; ?>overlay"<?php endif; ?> target="_<?php echo $slide -> linktarget; ?>" title="<?php echo __($slide -> title); ?>"><img src="<?php echo $this -> Html -> bfithumb_image_src($slide -> image_path, $this -> get_option('thumbwidth'), $this -> get_option('thumbheight'), 100); ?>" alt="<?php echo $this -> Html -> sanitize(__($slide -> title)); ?>" /></a>
 						<?php else : ?>
 							<a><img src="<?php echo $this -> Html -> bfithumb_image_src($slide -> image_path, $this -> get_option('thumbwidth'), $this -> get_option('thumbheight'), 100); ?>" alt="<?php echo $this -> Html -> sanitize(__($slide -> title)); ?>" /></a>
 						<?php endif; ?>
@@ -109,7 +109,7 @@ $thumbopacity = $this -> get_option('thumbopacity');
 						<?php if ($slide -> uselink == "Y" && !empty($slide -> link)) : ?>
 							<a href="<?php echo $slide -> link; ?>" target="_<?php echo $slide -> linktarget; ?>" title="<?php echo __($slide -> title); ?>"></a>
 						<?php elseif ($options['imagesoverlay'] == "true") : ?>
-							<a href="<?php echo $slide -> image_path; ?>" target="_<?php echo $slide -> linktarget; ?>" title="<?php echo __($slide -> title); ?>"></a>
+							<a href="<?php echo $slide -> image_path; ?>" id="<?php echo $unique; ?>imglink<?php echo $slide -> id; ?>" <?php if ($this -> Html -> is_image($slide -> image_path)) : ?>class="colorbox" rel="slideshow<?php echo $unique; ?>overlay"<?php endif; ?> class="colorbox" rel="slideshow<?php echo $unique; ?>overlay" target="_<?php echo $slide -> linktarget; ?>" title="<?php echo __($slide -> title); ?>"></a>
 						<?php else : ?>
 							<a></a>
 						<?php endif; ?>
@@ -119,7 +119,7 @@ $thumbopacity = $this -> get_option('thumbopacity');
 		<?php endif; ?>
 	</ul>
 	
-	<div id="<?php echo $wrapperid; ?>" class="slideshow-wrapper"  >
+	<div id="<?php echo $wrapperid; ?>" class="slideshow-wrapper">
 		<?php if ($options['showthumbs'] == "true" && $options['thumbsposition'] == "top") : ?>
 			<div id="thumbnails<?php echo $unique; ?>" class="slideshow-thumbnails thumbstop">
 				<div class="slideshow-slideleft" id="slideleft<?php echo $unique; ?>" title="<?php _e('Slide Left', $this -> plugin_name); ?>"></div>
@@ -137,7 +137,7 @@ $thumbopacity = $this -> get_option('thumbopacity');
 				<?php $navb = "imgprev"; ?>
 				<div id="imgprev<?php echo $unique; ?>" class="slideshow-imgprev imgnav" title="<?php _e('Previous Image', $this -> plugin_name); ?>"><?php _e('Previous Image', $this -> plugin_name); ?></div>
 			<?php endif; ?>
-			
+			<a id="imglink<?php echo $unique; ?>" class="slideshow-imglink imglink"><!-- link --></a>
 			<?php if ($options['shownav'] == "true" && count($slides) > 1) : ?>
 				<?php $navf = "imgnext"; ?>
 				<div id="imgnext<?php echo $unique; ?>" class="slideshow-imgnext imgnav" title="<?php _e('Next Image', $this -> plugin_name); ?>"><?php _e('Next Image', $this -> plugin_name); ?></div>
@@ -145,9 +145,8 @@ $thumbopacity = $this -> get_option('thumbopacity');
 			<div id="image<?php echo $unique; ?>" class="slideshow-image"></div>
 			<?php if ($options['showinfo'] == "true") : ?>
 				<div class="slideshow-information" id="information<?php echo $unique; ?>">
-					<h3 class="slideshow-info-heading"></h3>
-					<div id="imglink<?php echo $unique; ?>" class="slideshow-imglink imglink"></div><!-- link -->
-					<p class="slideshow-info-content"></p>
+					<h3 class="slideshow-info-heading">info heading</h3>
+					<p class="slideshow-info-content">info content</p>
 				</div>
 			<?php endif; ?>
 		</div>
@@ -178,12 +177,17 @@ $thumbopacity = $this -> get_option('thumbopacity');
 	jQuery(document).ready(function() {
 		<?php if (empty($options['auto']) || (!empty($options['auto']) && $options['auto'] == "true")) : ?>slideshow<?php echo $unique; ?>.auto = true;<?php else : ?>slideshow<?php echo $unique; ?>.auto = false;<?php endif; ?>
 		slideshow<?php echo $unique; ?>.speed = <?php echo $options['autospeed']; ?>;
+		slideshow<?php echo $unique; ?>.effect = "<?php echo $options['effect']; ?>";
+		slideshow<?php echo $unique; ?>.slide_direction = "<?php echo $options['slide_direction']; ?>";
+		slideshow<?php echo $unique; ?>.easing = "<?php echo $options['easing']; ?>";
 		slideshow<?php echo $unique; ?>.alwaysauto = <?php echo $options['alwaysauto']; ?>;
+		slideshow<?php echo $unique; ?>.autoheight = <?php echo $options['autoheight']; ?>;
 		slideshow<?php echo $unique; ?>.imgSpeed = <?php echo $options['fadespeed']; ?>;
 		slideshow<?php echo $unique; ?>.navOpacity = <?php echo (empty($options['navopacity'])) ? 0 : $options['navopacity']; ?>;
 		slideshow<?php echo $unique; ?>.navHover = <?php echo (empty($options['navhoveropacity'])) ? 0 : $options['navhoveropacity']; ?>;
 		slideshow<?php echo $unique; ?>.letterbox = "#000000";
 		slideshow<?php echo $unique; ?>.linkclass = "linkhover";
+		slideshow<?php echo $unique; ?>.imagesid = "images<?php echo $unique; ?>";
 		slideshow<?php echo $unique; ?>.info = "<?php echo ($options['showinfo'] == "true") ? 'information' . $unique : ''; ?>";
 		slideshow<?php echo $unique; ?>.infoSpeed = <?php echo $options['infospeed']; ?>;
 		slideshow<?php echo $unique; ?>.thumbs = "<?php echo ($options['showthumbs'] == "true") ? 'slider' . $unique : ''; ?>";
@@ -223,11 +227,19 @@ $thumbopacity = $this -> get_option('thumbopacity');
 	$cssattr['sliderwidth'] = (($cssattr['thumbwidth'] + $options['thumbsspacing'] + 6) * count($slides));
 	$cssattr['infohideonmobile'] = $this -> get_option('infohideonmobile');
 	
+	$javascript = ob_get_clean(); 
+	global $slideshow_javascript;
+	$slideshow_javascript[] = $javascript;
+	
+	ob_start();
+	
 	?>
 	
-	<style type="text/css">
+	<?php /*<style type="text/css">
 	@import url('<?php echo $this -> get_css_url($cssattr, $options['layout']); ?>');
-	</style>
+	</style>*/ ?>
+	
+	<link rel="stylesheet" property="stylesheet" href="<?php echo $this -> get_css_url($cssattr, $options['layout']); ?>" type="text/css" media="all" />
 	
 	<!--[if IE 6]>
 	<style type="text/css">
@@ -236,11 +248,23 @@ $thumbopacity = $this -> get_option('thumbopacity');
 	</style>
 	<![endif]-->
 	
-	<?php 
+	<?php
+		
+	$css = ob_get_clean();
+
+	global $slideshow_css;
+	$slideshow_css[] = $css;
 	
-	$javascript = ob_get_clean(); 
-	global $slideshow_javascript;
-	$slideshow_javascript[] = $javascript;
+	$jsoutput = $this -> get_option('jsoutput');
+	if (empty($jsoutput) || $jsoutput == "perslideshow") {
+		echo '<!-- Slideshow Gallery Javascript BEG -->';
+		echo stripslashes($javascript);
+		echo '<!-- Slideshow Gallery Javascript END -->';
+		
+		echo '<!-- Slideshow Gallery CSS BEG -->';
+		echo stripslashes($css);
+		echo '<!-- Slideshow Gallery CSS END -->';
+	}
 	
 	?>
 <?php else : ?>

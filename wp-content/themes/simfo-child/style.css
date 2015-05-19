@@ -1,0 +1,51 @@
+/*
+Theme Name:     Simfo Child
+Description:    Child theme for the Simfo Theme
+Author:         Sebastián González Díaz
+Template:       simfo-revision-2
+Version:        0.1.0
+*/
+
+@import url("../simfo-revision-2/style.css");
+
+.pagewidth { width: 1000px; }
+#main-nav .menu-item-2453 { vertical-align: middle; }
+#main-nav .menu-item-2453 a { text-indent: -9999px; background: url("img/shoptiques.png") no-repeat; display: block; width: 111px; height: 14px; padding-top: 0; }
+
+#main-nav { background: url("img/nav-background.png") no-repeat center top; background-size: 94% 100%; }
+
+#content .wardrobe { background: url("img/wardrobe-bucket.png") no-repeat left top; background-size: 100% 100%; padding: 1px 85px 1px 1px; margin: 30px 0; font-family: "Montserrat",sans-serif; }
+#content .wardrobe.first { margin-top: 50px; }
+#content .wardrobe img { display: block; border: 1px solid #000; float: left; margin-right: 15px; }
+
+.crellyslider-slider { padding: 1px; background: url("img/slideshow-border.png") no-repeat left top; background-size: 100% 100%; color: #000; font-weight: 300; }
+#crellyslider-1 .cs-controls { top: 45%; }
+#crellyslider-1 .cs-next { background-image: url("img/slideshow-right.png"); width: 49px; height: 67px; background-position: 0 0; right: 10px;}
+#crellyslider-1 .cs-previous { background-image: url("img/slideshow-left.png"); width: 49px; height: 67px; left: 10px; }
+
+.ella-wrapper { background: url("img/widgets-border.png") no-repeat left top; background-size: 100% 100%; padding: 1px; width: 100%; height: auto; position: relative; }
+.widget-back-image { width: 100%; height: auto; z-index: 10; }
+.widget-back-image img { width: 100%; height: auto; display: block; z-index: 20; }
+.widget-text { width: 100%; padding: 6px 28px; max-width: 430px; }
+.widget-text.over-image { position: absolute; top: 0; left: 0; z-index: 50; }
+
+#ella-footer .top-footer { height: 140px; padding-top: 20px; }
+#ella-footer .top-footer > div { background: url("img/footer-separator.png") no-repeat left top; height: inherit; }
+#ella-footer .top-footer > div.first { background: none no-repeat; }
+#ella-footer .top-footer:after { content: ''; display: block; clear: both; }
+#ella-footer .top-footer h4 { font: normal normal 18px "Montserrat",sans-serif; margin-top: 0; color: #171717; text-align: center; }
+#ella-footer .top-footer p { text-align: center; }
+#ella-footer .footer-socials { margin: 24px auto 0 auto; display: table;  }
+#ella-footer .footer-socials a { display: block; margin-right: 24px; height: 22px; float: left; }
+#ella-footer .footer-socials a.last { margin-right: 0; }
+#ella-footer .facebook-icon { background: url("img/social-icons.png") no-repeat left top; width: 11px; }
+#ella-footer .twitter-icon { background: url("img/social-icons.png") no-repeat -11px top; width: 27px; }
+#ella-footer .instagram-icon { background: url("img/social-icons.png") no-repeat -38px top; width: 23px; }
+#ella-footer .pinterest-icon { background: url("img/social-icons.png") no-repeat -61px top; width: 23px; }
+#ella-footer .top-footer .signup-form { display: table; margin: 0 auto; }
+#ella-footer .phone { margin-top: 22px; color: #652d8a; font: normal 22px/22px "Montserrat",sans-serif; }
+#ella-footer .bottom-footer .e-logo { float: right; position: relative; top: -35px; right: 80px; z-index: 10; }
+#ella-footer .bottom-footer p, #ella-footer .bottom-footer a { text-align: center; margin-top: 4px; color: #652d8a; }
+#ella-footer .bottom-footer a { text-decoration: none; }
+#ella-footer .hr { display: block; }
+#ella-footer .hr.last-hr { position: relative; top: -80px; }

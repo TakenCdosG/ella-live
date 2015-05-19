@@ -6,7 +6,7 @@ Plugin URI: http://tribulant.com/plugins/view/13/wordpress-slideshow-gallery
 Author: Tribulant Software
 Author URI: http://tribulant.com
 Description: Feature content in a JavaScript powered slideshow gallery showcase on your WordPress website. The slideshow is flexible and all aspects can easily be configured. Embedding or hardcoding the slideshow gallery is a breeze. To embed into a post/page, simply insert <code>[tribulant_slideshow]</code> into its content with an optional <code>post_id</code> parameter. To hardcode into any PHP file of your WordPress theme, simply use <code>&lt;?php if (function_exists('slideshow')) { slideshow($output = true, $post_id = false, $gallery_id = false, $params = array()); } ?&gt;</code>.
-Version: 1.5
+Version: 1.5.3
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: slideshow gallery, slideshow, gallery, slider, jquery, bfithumb, galleries, photos, images
@@ -18,6 +18,7 @@ if (!defined('DS')) { define('DS', DIRECTORY_SEPARATOR); }
 
 $path = dirname(__FILE__) . DS . 'slideshow-gallery-plugin.php';
 if (file_exists($path)) {
+	require_once(dirname(__FILE__) . DS . 'includes' . DS . 'checkinit.php');
 	require_once($path);
 }
 
@@ -94,22 +95,45 @@ if (!class_exists('Gallery')) {
 		}
 		
 		function wp_head() {
-			global $slideshow_javascript;
+			global $slideshow_javascript, $slideshow_css;
 			$slideshow_javascript = array();
+			$slideshow_css = array();
+			
+			if (!empty($_GET['test-head'])) {
+				echo '<!-- wp_head -->';
+			}
 		}
 		
 		function wp_footer() {
-			global $slideshow_javascript;
+			global $slideshow_javascript, $slideshow_css;
+			$jsoutput = $this -> get_option('jsoutput');
 		
 			if (!empty($slideshow_javascript)) {
+				if (!empty($jsoutput) && $jsoutput == "footerglobal") {
+					?><!-- Slideshow Gallery Javascript BEG --><?php
 				
-				?><!-- Slideshow Gallery Javascript BEG --><?php
-			
-				foreach ($slideshow_javascript as $javascript) {
-					echo stripslashes($javascript);
+					foreach ($slideshow_javascript as $javascript) {
+						echo stripslashes($javascript);
+					}
+					
+					?><!-- Slideshow Gallery Javascript END --><?php
 				}
-				
-				?><!-- Slideshow Gallery Javascript END --><?php
+			}
+			
+			if (!empty($slideshow_css)) {
+				if (!empty($jsoutput) && $jsoutput == "footerglobal") {
+					?><!-- Slideshow Gallery CSS BEG --><?php
+						
+					foreach ($slideshow_css as $css) {
+						echo stripslashes($css);
+					}
+					
+					?><!-- Slideshow Gallery CSS END --><?php
+				}
+			}
+			
+			if (!empty($_GET['test-footer'])) {
+				echo '<!-- wp_footer -->';
 			}
 		}
 		
@@ -136,11 +160,12 @@ if (!class_exists('Gallery')) {
 		
 		function admin_head_gallery_settings() {		
 			add_meta_box('submitdiv', __('Save Settings', $this -> plugin_name), array($this -> Metabox, "settings_submit"), $this -> menus['slideshow-settings'], 'side', 'core');
-			add_meta_box('aboutdiv', __('About This Plugin', $this -> plugin_name) . $this -> Html -> help(__('More about this plugin and the creators of it', $this -> plugin_name)), array($this -> Metabox, "settings_about"), $this -> menus['slideshow-settings'], 'side', 'core');
 			add_meta_box('pluginsdiv', __('Recommended Plugin', $this -> plugin_name), array($this -> Metabox, "settings_plugins"), $this -> menus['slideshow-settings'], 'side', 'core');
+			add_meta_box('aboutdiv', __('About This Plugin', $this -> plugin_name) . $this -> Html -> help(__('More about this plugin and the creators of it', $this -> plugin_name)), array($this -> Metabox, "settings_about"), $this -> menus['slideshow-settings'], 'side', 'core');
 			add_meta_box('generaldiv', __('General Settings', $this -> plugin_name) . $this -> Html -> help(__('General configuration settings for the inner workings and some default behaviours', $this -> plugin_name)), array($this -> Metabox, "settings_general"), $this -> menus['slideshow-settings'], 'normal', 'core');
 			add_meta_box('linksimagesdiv', __('Links &amp; Images Overlay', $this -> plugin_name) . $this -> Html -> help(__('Configure the way that slides with links are opened', $this -> plugin_name)), array($this -> Metabox, "settings_linksimages"), $this -> menus['slideshow-settings'], 'normal', 'core');
 			add_meta_box('stylesdiv', __('Appearance &amp; Styles', $this -> plugin_name) . $this -> Html -> help(__('Change the way the slideshows look so that it suits your needs', $this -> plugin_name)), array($this -> Metabox, "settings_styles"), $this -> menus['slideshow-settings'], 'normal', 'core');
+			add_meta_box('techdiv', __('Technical Settings', $this -> plugin_name), array($this -> Metabox, "settings_tech"), $this -> menus['slideshow-settings'], 'normal', 'core');
 			add_meta_box('wprelateddiv', __('WordPress Related', $this -> plugin_name) . $this -> Html -> help(__('Settings specifically related to WordPress', $this -> plugin_name)), array($this -> Metabox, "settings_wprelated"), $this -> menus['slideshow-settings'], 'normal', 'core');
 			
 			do_action('do_meta_boxes', $this -> menus['slideshow-settings'], 'normal');
@@ -168,6 +193,34 @@ if (!class_exists('Gallery')) {
 				
 				$this -> render_msg($message);
 			}
+			
+			/* Check if wp_head and wp_footer functions exist */
+			$url = add_query_arg(array('test-head' => 1, 'test-footer' => 1), home_url());
+			if ($response = wp_remote_request($url)) {
+				if (!is_wp_error($response)) {
+					$html = $response['body'];
+					$showmessage_wphead = $this -> get_option('showmessage_wphead');
+					$showmessage_wpfoot = $this -> get_option('showmessage_wpfoot');
+					
+					if (!strstr($html, '<!-- wp_head -->')) {
+						if (empty($showmessage_wphead) || (!empty($showmessage_wphead) && $showmessage_wphead != "hidden")) {
+							$this -> update_option('showmessage_wphead', 1);
+							$this -> render_err(sprintf(__('Slideshow Gallery: It seems like your theme is missing the wp_head() function. See %s. %s', $this -> plugin_name), '<a href="http://codex.wordpress.org/Function_Reference/wp_head" target="_blank">' . __('documentation', $this -> plugin_name) . '</a>', '<a href="' . admin_url('admin.php?page=' . $this -> sections -> settings . '&slideshow_method=hidemessage&message=wphead') . '" class="slideshow-icon-delete"></a>'));
+						}
+					}
+					
+					if (!strstr($html, '<!-- wp_footer -->')) {
+						if (empty($showmessage_wpfoot) || (!empty($showmessage_wpfoot) && $showmessage_wpfoot != "hidden")) {
+							$this -> update_option('showmessage_wpfoot', 1);
+							$this -> render_err(sprintf(__('Slideshow Gallery: It seems like your theme is missing the wp_footer() function. See %s . %s', $this -> plugin_name), '<a href="http://codex.wordpress.org/Function_Reference/wp_footer" target="_blank">' . __('documentation', $this -> plugin_name) . '</a>', '<a href="' . admin_url('admin.php?page=' . $this -> sections -> settings . '&slideshow_method=hidemessage&message=wpfoot') . '" class="slideshow-icon-delete"></a>'));
+						}
+					}
+				} else {
+					$error_string = $response -> get_error_message();
+					$this -> render_err($error_string);
+				}
+			}
+			
 		}
 		
 		function mce_buttons($buttons) {
@@ -198,6 +251,9 @@ if (!class_exists('Gallery')) {
 			global $wpdb;
 			$styles = $this -> get_option('styles');
 			
+			$effect = $this -> get_option('effect');
+			$slide_direction = $this -> get_option('slide_direction');
+			$easing = $this -> get_option('easing');
 			$autoheight = $this -> get_option('autoheight');
 		
 			// default shortcode parameters
@@ -214,11 +270,14 @@ if (!class_exists('Gallery')) {
 				'imagesoverlay'			=>	(($this -> get_option('imagesthickbox') == "Y") ? "true" : "false"),
 				'layout'				=>	($styles['layout']),
 				'width'					=>	($styles['width']),
-				'height'				=>	($styles['height']),
+				'height'				=>	((empty($autoheight)) ? $styles['height'] : false),
 				'autoheight'			=>	((!empty($autoheight)) ? "true" : "false"),
 				'resheight'				=>	($styles['resheight']),
 				'resheighttype'			=>	($styles['resheighttype']),
 				'auto'					=>	(($this -> get_option('autoslide') == "Y") ? "true" : "false"),
+				'effect'				=>	((empty($effect) || (!empty($effect) && $effect == "fade")) ? 'fade' : 'slide'),
+				'slide_direction'		=>	((empty($slide_direction) || (!empty($slide_direction) && $slide_direction == "lr")) ? 'lr' : 'tb'),
+				'easing'				=>	((empty($easing)) ? 'swing' : $easing),
 				'autospeed'				=>	($this -> get_option('autospeed')),
 				'alwaysauto'			=>	($this -> get_option('alwaysauto')),
 				'fadespeed'				=>	($this -> get_option('fadespeed')),
@@ -517,7 +576,7 @@ if (!class_exists('Gallery')) {
 					$orderfield = (empty($_GET['orderby'])) ? 'modified' : $_GET['orderby'];
 					$orderdirection = (empty($_GET['order'])) ? 'DESC' : strtoupper($_GET['order']);
 					$order = array($orderfield, $orderdirection);
-					$data = $this -> paginate('Slide', false, false, false, false, 10, $order);				
+					$data = $this -> paginate('Slide', false, false, false, false, 50, $order);				
 					$this -> render('slides' . DS . 'index', array('slides' => $data[$this -> Slide -> model], 'paginate' => $data['Paginate']), true, 'admin');
 					break;
 			}
@@ -722,6 +781,12 @@ if (!class_exists('Gallery')) {
 							switch ($_GET['message']) {
 								case 'ratereview'				:
 									$this -> delete_option('showmessage_ratereview');
+									$this -> redirect($this -> referer);
+									break;
+								case 'wphead'					:
+								case 'wpfoot'					:
+									$this -> update_option('showmessage_wphead', 'hidden');
+									$this -> update_option('showmessage_wpfoot', 'hidden');
 									$this -> redirect($this -> referer);
 									break;
 							}
