@@ -7,7 +7,8 @@
 	global $themify; ?>
 <link rel='stylesheet' id='google-fonts-css'  href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,700,600|Montserrat:400,700' type='text/css' media='all'>
 <link href='http://fonts.googleapis.com/css?family=Quicksand' rel='stylesheet' type='text/css'>
-
+<script src="//use.typekit.net/ven3dzw.js"></script>
+<script>try{Typekit.load();}catch(e){}</script>
 <meta charset="<?php bloginfo( 'charset' ); ?>" />
 
 

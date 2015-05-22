@@ -14,7 +14,7 @@ Version:        0.1.0
 
 #main-nav { background: url("img/nav-background.png") no-repeat center top; background-size: 94% 100%; }
 
-#content .wardrobe { background: url("img/wardrobe-bucket.png") no-repeat left top; background-size: 100% 100%; padding: 1px 85px 1px 1px; margin: 30px 0; font-family: "Montserrat",sans-serif; }
+#content .wardrobe { background: url("img/wardrobe-bucket.png") no-repeat left top; background-size: 100% 100%; padding: 1px 85px 1px 1px; margin: 30px 0; font-family: "brandon-grotesque"; }
 #content #page-2 .wardrobe { margin-top: 0; padding-right: 0; }
 #content .home-wardrobe { float: left; width: 100%; max-width: 360px; height: auto; }
 #content .wardrobe.first { margin-top: 50px; }
@@ -37,7 +37,7 @@ Version:        0.1.0
 #ella-footer .top-footer > div { background: url("img/footer-separator.png") no-repeat left top; height: inherit; }
 #ella-footer .top-footer > div.first { background: none no-repeat; }
 #ella-footer .top-footer:after { content: ''; display: block; clear: both; }
-#ella-footer .top-footer h4 { font: normal normal 18px "Montserrat",sans-serif; margin-top: 0; color: #171717; text-align: center; }
+#ella-footer .top-footer h4 { font: normal normal 18px "brandon-grotesque"; margin-top: 0; color: #171717; text-align: center; }
 #ella-footer .top-footer p { text-align: center; }
 #ella-footer .footer-socials { margin: 24px auto 0 auto; display: table;  }
 #ella-footer .footer-socials a { display: block; margin-right: 24px; height: 22px; float: left; }
@@ -47,9 +47,494 @@ Version:        0.1.0
 #ella-footer .instagram-icon { background: url("img/social-icons.png") no-repeat -38px top; width: 23px; }
 #ella-footer .pinterest-icon { background: url("img/social-icons.png") no-repeat -61px top; width: 23px; }
 #ella-footer .top-footer .signup-form { display: table; margin: 0 auto; }
-#ella-footer .phone { margin-top: 22px; color: #652d8a; font: normal 22px/22px "Montserrat",sans-serif; }
+#ella-footer .phone { margin-top: 22px; color: #652d8a; font: normal 22px/22px "brandon-grotesque"; }
 #ella-footer .bottom-footer .e-logo { float: right; position: relative; top: -35px; right: 80px; z-index: 10; }
 #ella-footer .bottom-footer p, #ella-footer .bottom-footer a { text-align: center; margin-top: 4px; color: #652d8a; }
 #ella-footer .bottom-footer a { text-decoration: none; }
 #ella-footer .hr { display: block; }
 #ella-footer .hr.last-hr { position: relative; top: -80px; }
+
+/*
+* STYLES TAKEN FROM THE CUSTOMIZE SECTION OF THE CMS
+*/
+
+h1, h2, h3, h4, h5, h6, p, div,span, table, li, a {
+    font-family: "brandon-grotesque";
+}
+#sliderwrap {
+    display:none !important;
+}
+.page-item-2 {
+    display:none !important;
+}
+#comments {
+    display:none !important;
+}
+.module-text {
+    font-family:"brandon-grotesque"; !important;
+}
+.module {
+    font-family:"brandon-grotesque"; !important;
+}
+.module table tbody tr td  {
+    font-family:"brandon-grotesque"; !important;
+}
+.module table tbody tr td p {
+    font-family:"brandon-grotesque"; !important;
+}
+.module table tbody tr td p span {
+    font-family:"brandon-grotesque"; !important;
+}
+h6 {
+    font-family:"brandon-grotesque"; !important;
+    font-style: normal !important;
+    font-size:10pt !important;
+    font-weight:100 !important;
+    margin: 50px 0px -20px 0px;
+    color:#652D8A !important;
+}
+h5 a {
+    font-family:"brandon-grotesque"; !important;
+    font-style: normal !important;
+    font-size:10pt !important;
+    font-weight:100 !important;
+    margin: 0px 0px -66px 0px;
+    color:#566422 !important;
+    text-decoration:none !important;
+}
+#footer {
+    border-top: double 0px #999 !important;
+}
+.footer-text {
+    display:none !important;
+}
+#footer-logo {
+    display:none !important;
+}
+.back-top {
+    display:none !important;
+}
+#site-logo {
+    display:none !important;
+}
+#site-description {
+    display:none !important;
+}
+.page-title {
+    font-style: normal;
+    margin-top: 40px;
+}
+.rss {
+    display:none !important;
+}
+#searchform-wrap {
+    display:none !important;
+}
+#hss-pager {
+    display:none !important;
+}
+#main-nav-wrap   {
+    padding: 0px 0px 0px 0px;
+    margin: 21px 0px 0px 0px !important;
+}
+#main-nav {
+    background-color:white;
+    font-family:"brandon-grotesque"; ;
+    margin:50px 0px 0px 0px;
+}
+#main-nav a {
+    font-family:"brandon-grotesque"; ;
+    font-size:11pt;
+    border-top: 0px solid #C6C6C6;
+    font-weight:normal;
+    margin: 0px 8px 0px 0px;
+    color:#566422;
+}
+#main-nav .current-menu-item a,#main-nav .current-menu-item a:hover,#main-nav li:hover > a {
+    border-top: medium none;
+}
+#main-nav li {
+    margin:6px 6px 9px 6px !important;
+    font-family:"brandon-grotesque"; ;
+}
+#headerwrap #main-nav a:hover {
+    color:#652D8A !important;
+}
+.page-item-2353 {
+    margin-top: 4px !important;
+    margin-bottom: 14px  !important;
+}
+.current_page_item a {
+    color:#652D8A !important;
+}
+.current_page_item  {
+    color:#652D8A !important;
+}
+.mobile-button {
+    position: relative ;
+    width: 40px !important;
+    height: 41px !important;
+    display: block ;
+    float: right ;
+    cursor: pointer !important;
+    color: white !important;
+    border-radius: 0px !important;
+    margin: -30px 0px  0px  0px !important;
+    background-color: white !important;
+    border: 0px solid #652D8A !important;
+    right: -8px !important;
+    top: -1px !important;
+    padding: 0px !important;
+}
+.mobile-button:before {
+    color: white !important;
+    background-color: #652D8A !important;
+    border: 10px solid #652D8A !important;
+    margin: 0px !important;
+    position: absolute;
+    top: 0px !important;
+    left: 0px !important;
+    padding: 0px !important;
+}
+#header {
+    border-bottom: double 0px #999;
+    margin-top: 0px !important;
+}
+#header hgroup div div div img {
+    margin-top: -10px !important;
+}
+#body {
+    padding: 0px 0px 0px 0px;
+    margin: 0px 0px 0px 0px;
+}
+#layout  {
+    padding: 0px;
+    margin-top:-53px ;
+}
+.slide-content {
+    background:transparent !important;
+    background-color:transparent !important;
+}
+/**COMMENTS**/
+p.form-submit {
+    clear:both !important;
+    float:left !important;
+    font-family:"brandon-grotesque"; !important;
+    font-size:12pt !important;
+    color:white !important;
+    background-color:#652D8A !important;
+}
+p.form-submit input#submit {
+    background-color:#652D8A !important;
+    border-radius:0px !important;
+    color:white !important;
+    clear:both !important;
+    float:left !important;
+    font-family:"brandon-grotesque"; !important;
+    font-size:12pt !important;
+    color:white !important;
+    background-color:#652D8A !important;
+    border:1px solid #8B8B8B !important;
+}
+.comment-form div p input {
+    font-family:"brandon-grotesque"; !important;
+    font-size:16pt !important;
+    color:#7C7C7C !important;
+    background-color:white !important;
+    border: 1px solid #7C7C7C !important;
+}
+.comment-form div p textarea {
+    font-family:"brandon-grotesque"; !important;
+    font-size:16pt !important;
+    color:#7C7C7C !important;
+    background-color:white !important;
+    border: 1px solid #7C7C7C !important;
+}
+.comment-reply-title {
+    font-family:"brandon-grotesque"; !important;
+    font-style: normal !important;
+    font-size:11pt !important;
+    font-weight:100 !important;
+    color:#AB2C2C !important;
+}
+.comment-title {
+    font-family:"brandon-grotesque"; !important;
+    font-style: normal !important;
+    font-size:11pt !important;
+    font-weight:100 !important;
+    color:#AB2C2C !important;
+}
+.comment-author cite {
+    font-family:"brandon-grotesque"; !important;
+    font-style:normal !important;
+}
+.comment-time {
+    font-family:"brandon-grotesque"; !important;
+}
+.commententry {
+    font-family:"brandon-grotesque"; !important;
+    font-style:normal !important;
+}
+#sidebar {
+    font-family:"brandon-grotesque"; !important;
+    font-style:normal !important;
+    margin:65px 0px 0px 0px !important;
+}
+.post-content {
+    font-family:"brandon-grotesque"; !important;
+    font-style:normal !important;
+    margin:25px 0px 0px 0px !important;
+}
+.post-date-wrap  {
+    font-family:"brandon-grotesque"; !important;
+    font-style:normal !important;
+}
+.post-meta {
+    font-family:"brandon-grotesque"; !important;
+    font-style:normal !important;
+}
+.post-title a {
+    font-family:"brandon-grotesque"; !important;
+    font-style:normal !important;
+}
+.widgettitle {
+    font-family:"brandon-grotesque"; !important;
+    font-style:normal !important;
+}
+.module-text  {
+    font-family:"brandon-grotesque"; !important;
+    font-style:normal !important;
+    font-size:11pt !important;
+    font-weight:100 !important;
+    color:black !important;
+}
+.module-text h1 {
+    font-family:"brandon-grotesque"; !important;
+    font-style: normal !important;
+    font-size:35pt !important;
+    font-weight:100 !important;
+}
+/**COMMENTS**//**Sliders**/
+.amazingcarousel-image div a {
+   display:none !important;
+}
+.amazingcarousel-image div  {
+    display:none !important;
+}
+.cs-navigation {
+    text-decoration:none;
+}
+.home-slideshow {
+    height:444px !important;
+}
+.cycle-slideshow div a img {
+    height:444px !important;
+    width:1024px !important;
+}
+.cycle-slideshow div {
+    height:444px !important;
+}
+#hss-nav {
+    position:absolute !important;
+    width:100% !important;
+}
+#hss-pager {
+    display:none !important;
+}
+.cycloneslider-slide {
+    opacity: 0 !important;
+}
+.slideshow-information {
+    background-color:transparent !important;
+}
+#slideshow-wrappergallery1 .linkhover {
+    background-color:transparent !important;
+}
+.slideshow-info-heading {
+    font-family:"brandon-grotesque"; !important;
+    font-style:normal !important;
+    font-size:20pt !important;
+    color:black !important;
+    line-height:1em !important;
+    margin: 0px 0px 35px 55px !important;
+}
+.slideshow-info-content {
+    background-color:black !important;
+    color:white !important;
+    padding:10px !important;
+    width:175px !important;
+    text-align:center !important;
+    font-family:"brandon-grotesque"; !important;
+    margin: 0px 0px 0px 0px !important;
+}
+.slideshow-imgprev {
+    z-index:999;
+}
+.slideshow-imgnext {
+    z-index:999;
+}
+.slideshow-fullsize {
+    height:444px !important;
+}
+/**Sliders**//**Social Media**/
+.mg-wpsi {
+   display:none !important;
+}
+#text-2485-1-0-3 {
+    display:none !important;
+}
+.text-2485-1-0-3 {
+    display:none !important;
+}
+.rssi-icons {
+    margin: 0px 0px 15px 0px !important;
+}
+.rssi-icons li a {
+    border-radius:5px !important;
+}
+.mg-wpsi li a {
+    border-radius:5px !important;
+    border:1px solid silver !important;
+    margin: 0px 5px 0px 0px !important;
+    font-family:sans-serif !important;
+}
+/**Social Media**//**Etsy**/
+.menu-item-2453 {
+    width:75px;
+    font-family:"Georgia", georgia, sans-serif;
+    font-size:13pt;
+    font-weight: bold;
+    color:#632C87t;
+    text-transform:capitalize;
+}
+#main-nav .menu-item-2453 a {
+    font-family:"Georgia", georgia, sans-serif;
+    font-size:13pt;
+    color:#632C87;
+}
+/**Etsy**//**soldie**/
+.menu-item-2454 {
+  width:75px !important;
+  font-family:"Georgia", georgia, sans-serif !important;
+  font-size:13pt !important;
+  font-weight: bold !important;
+  font-style:italic !important;
+  color:#632C87 !important;
+  text-transform: lowercase !important;
+}
+#main-nav .menu-item-2454 a {
+    font-family:"Georgia", georgia, sans-serif;
+    font-size:13pt;
+    font-weight: bold;
+    font-style:italic;
+    color:#632C87;
+    text-transform: lowercase;
+    letter-spacing: 0;
+}
+/**soldie**//**BANNERS**/
+.banners_container {
+ border:1px solid #969696 !important;
+ font-family:"brandon-grotesque"; !important;
+ font-style:normal !important;
+ margin:17px 0px 0px 0px;
+}
+.banners_title {
+    margin:10px 0px 0px 26px;
+    color:#652D8A;
+    font-size:13pt;
+}
+.banners_description {
+    margin:12px 24px 0px 24px;
+    font-size:31pt;
+    line-height:1em;
+    color:#787E7D;
+    font-style:normal !important;
+    font-family:"Quicksand", sans-serif !important;
+    font-weight: bold !important;
+}
+.banners_button {
+    margin:16px 0px 15px 24px;
+}
+.banners_button a {
+    border-top:1px solid gray;
+    border-left:1px solid silver;
+    border-right:1px solid silver;
+    border-bottom:0px solid black;
+    background-color:black;
+    color:white;
+    text-decoration:none;
+    padding:6px 9px 6px 9px;
+}
+/**BANNERS**//**WHATS NEW**/
+.module_row_3 {
+    border: 1px solid #969696 !important;
+}
+.module_row_3 .row_inner_wrapper {
+    border: 1px solid #969696 !important;
+}
+.module_row_3 .row_inner_wrapper row_inner {
+    padding:15px !important;
+}
+.module_row_4 {
+    border: 0px solid #7D7D7D !important;
+}
+.module_row_4 .row_inner_wrapper {
+    border: 1px solid #969696 !important;
+    margin-top:21px !important;
+}
+.module_row_4 .row_inner_wrapper row_inner {
+    padding:15px !important;
+}
+.whats_new_title  {
+    margin:18px 0px 0px 0px !important;
+}
+.whats_new_title a {
+    font-family:"brandon-grotesque"; !important;
+    font-weight: bold !important;
+    font-size:13pt !important;
+    text-decoration:none;
+    color:#566422 !important;
+}
+.whats_new_description {
+    font-family:"brandon-grotesque"; !important;
+    font-size:10pt !important;
+    margin:16px 0px 0px 0px !important;
+    letter-spacing:-1px !important;
+}
+.pg-sas-product img {
+    margin:10px 10px 10px 10px !important;
+    width:168px;
+    border:1px solid black;
+}
+.text-2-3-0-0 p  strong {
+    font-family:"Quicksand", sans-serif !important;
+    font-weight: bold !important;
+    font-size:43pt !important;
+}
+.text-2-3-0-0 p   {
+    margin:14px 0px 0px 15px !important}
+.text-2-4-0-0 p  strong {
+    font-family:"Quicksand", sans-serif !important;
+    font-weight: bold !important;
+    font-size:43pt !important;
+}
+.text-2-4-0-0 p   {
+    margin:14px 0px 0px 15px !important}
+/**WHATS NEW**//**BOTTOM LINKS**/
+.bottom_links a {
+     text-decoration:none !important;
+     color:#566422 !important;
+     font-size:10pt !important;
+ }
+.bottom_links span {
+    background-color:white;
+    margin-left:-8px;
+}
+/**BOTTOM LINKS**/
+
+/*
+* MARIJKE TANSEY FONT SHADOW
+*/
+span.mts{
+    text-shadow: 2px 1px 1px rgba(0, 0, 0, 1);
+}
