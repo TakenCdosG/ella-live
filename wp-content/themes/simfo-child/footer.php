@@ -50,7 +50,7 @@
 							<div class="signup-form">
 								<form action="https://www.snapretail.com/retailer/ConsumerSignupForm.aspx/Save?DataCollectionType=EmbeddedWebForm" method="post"><input id="Token" name="Token" type="hidden" value="chnfKvRwDzx4LjGf23aubw">
 									<div class="collectEmailFormGroupBasic">
-										<input data-val="true" data-val-required="Required" id="EmailAddress" name="EmailAddress" placeholder="Email Address" type="text" value="" style="float:left; padding:0px 0px 0px 5px;  height:30px !important; margin:0px 0px 0px 0px; font-size:7pt; width:170px; color:black !important; font-family:tahoma, sans-serif !important; ">
+										<input data-val="true" data-val-required="Required" id="EmailAddress" name="EmailAddress" placeholder="Email Address" type="email" value="" style="float:left; padding:0px 0px 0px 5px;  height:30px !important; margin:0px 0px 0px 0px;">
 										<button type="submit" class="btn" style="float:left; border-radius:0px; padding:0px 0px 0px 0px; margin:0px 0px 0px 0px; border:0px solid #652D8A !important; width: 24px !important; height: 32px !important;	background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAgCAMAAAA/gEgKAAAAQlBMVEVlLYphK4RkLIhfKoJjLIdiLIZdKYBaKHuYgKhcKX7///9vO5Lg1ej18ffTw96Vc6uBUp/q4++8pMytj8GOZamjgbmMqqS7AAAAm0lEQVQoz73SyxKCMBBE0RZFQ+cp4P//qjMmBRVrsqUXLO4pigWD/LIHp8+lWwOpz7+JCWi+d1NSkHzrprTA1T4f+0kFzY9zQvIKnHTJ07EqDbSjTqWBds2nzB34VJr04AODtwAbmUxAIjcT/JvcLcBORhMC+bFgJVcYkMngDZBPxwIDUGKGCfAYAK6DSWH8a8fHMDyf4cENT/QLzW4LKQeIJ+4AAAAASUVORK5CYII=');"></button>
 									</div>
 									<span class="field-validation-valid" data-valmsg-for="EmailAddress" data-valmsg-replace="true"></span>
