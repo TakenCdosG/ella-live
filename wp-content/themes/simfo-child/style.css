@@ -541,7 +541,7 @@ span.mts{
 /*
 * EMAIL INPUT STYLES
 */
-div.signup-form form div.collectEmailFormGroupBasic input#EmailAddress{
+div.signup-form form div.collectEmailFormGroupBasic input#EmailAddress, div.widget.widget_search form#searchform input#s{
     font-family: "brandon-grotesque", sans-serif !important;
     font-size: 16px !important;
     color: #612b85 !important;
