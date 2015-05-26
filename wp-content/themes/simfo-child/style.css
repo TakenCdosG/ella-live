@@ -21,9 +21,9 @@ Version:        0.1.0
 #content .wardrobe img { display: block; border: 1px solid #000; float: left; margin-right: 15px; }
 
 .crellyslider-slider { padding: 1px; background: url("img/slideshow-border.png") no-repeat left top; background-size: 100% 100%; color: #000; font-weight: 300; }
-#crellyslider-1 .cs-controls { top: 45%; }
-#crellyslider-1 .cs-next { background-image: url("img/slideshow-right.png"); width: 49px; height: 67px; background-position: 0 0; right: 10px;}
-#crellyslider-1 .cs-previous { background-image: url("img/slideshow-left.png"); width: 49px; height: 67px; left: 10px; }
+#crellyslider-1 .cs-controls,#crellyslider-2 .cs-controls { top: 45%; }
+#crellyslider-1 .cs-next, #crellyslider-2 .cs-next { background-image: url("img/slideshow-right.png"); width: 49px; height: 67px; background-position: 0 0; right: 10px;}
+#crellyslider-1 .cs-previous, #crellyslider-2 .cs-previous { background-image: url("img/slideshow-left.png"); width: 49px; height: 67px; left: 10px; }
 
 .ella-wrapper { background: url("img/widgets-border.png") no-repeat left top; background-size: 100% 100%; padding: 1px; width: 100%; height: auto; position: relative; margin-bottom: 20px; }
 .widget-back-image { width: 100%; height: auto; z-index: 10; }
@@ -61,7 +61,7 @@ Version:        0.1.0
 h1, h2, h3, h4, h5, h6, p, div,span, table, li, a {
     font-family: "brandon-grotesque";
 }
-#sliderwrap {
+/*#sliderwrap {
     display:none !important;
 }
 .page-item-2 {
@@ -69,7 +69,7 @@ h1, h2, h3, h4, h5, h6, p, div,span, table, li, a {
 }
 #comments {
     display:none !important;
-}
+}*/
 .module-text {
     font-family:"brandon-grotesque"; !important;
 }
