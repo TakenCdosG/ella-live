@@ -557,3 +557,10 @@ div.signup-form form div.collectEmailFormGroupBasic input#EmailAddress{
 ::-moz-placeholder { color:#612b85; } /* firefox 19+ */
 :-ms-input-placeholder { color:#612b85; } /* ie */
 input:-moz-placeholder { color:#612b85; }
+
+/*
+* TEXTAREA STYLE-SOS PAGE STYLES
+*/
+#commentform textarea{
+    width: 300%;
+}
