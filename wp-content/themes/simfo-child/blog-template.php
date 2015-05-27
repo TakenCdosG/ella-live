@@ -53,7 +53,7 @@ global $themify; ?>
                             <h1 class="page-title" itemprop="name"><?php the_title(); ?></h1>
                         <?php endif; ?>
                         <!-- /page-title -->
-
+                        <?php the_content(); ?>
                         <?php $args = array( 'posts_per_page' => 10, 'order'=> 'ASC', 'orderby' => 'title' );
                         $postslist = get_posts( $args );
                         foreach ( $postslist as $post ) :
