@@ -38,10 +38,11 @@
 						<div class="shortcode col3-1 first">
 							<h4>Stay Connected</h4>
 							<div class="footer-socials">
-								<a class="facebook-icon" href="#"></a>
-								<a class="twitter-icon" href="#"></a>
-								<a class="instagram-icon" href="#"></a>
-								<a class="pinterest-icon last" href="#"></a>
+                                <?php global $fblink,$twlink,$inlink,$ptlink;  ?>
+								<a class="facebook-icon" href="<?php if($fblink==null) echo "#"; else echo $fblink; ?>"></a>
+								<a class="twitter-icon" href="<?php if($twlink==null) echo "#"; else echo $twlink; ?>"></a>
+								<a class="instagram-icon" href="<?php if($inlink==null) echo "#"; else echo $inlink; ?>"></a>
+								<a class="pinterest-icon last" href="<?php if($ptlink==null) echo "#"; else echo $ptlink; ?>"></a>
 							</div>
 						</div>
 						<div class="shortcode col3-1">

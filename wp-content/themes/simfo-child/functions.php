@@ -67,3 +67,14 @@ add_shortcode( 'ella-widget', 'build_widget' );
 
 // Advanced TinyMCE editor styles
 wp_enqueue_style( 'editor', get_stylesheet_directory_uri() . '/editor-style.css' );
+
+/*
+ *  ACF SOCIAL ICONS LINKS
+ */
+
+global $fblink,$twlink,$inlink,$ptlink;
+
+$fblink = get_field('fblink','2');
+$twlink = get_field('twlink','2');
+$inlink = get_field('inlink','2');
+$ptlink = get_field('ptlink','2');
