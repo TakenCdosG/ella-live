@@ -39,10 +39,10 @@
 							<h4>Stay Connected</h4>
 							<div class="footer-socials">
                                 <?php global $fblink,$twlink,$inlink,$ptlink;  ?>
-								<a class="facebook-icon" href="<?php if($fblink==null) echo "#"; else echo $fblink; ?>"></a>
-								<a class="twitter-icon" href="<?php if($twlink==null) echo "#"; else echo $twlink; ?>"></a>
-								<a class="instagram-icon" href="<?php if($inlink==null) echo "#"; else echo $inlink; ?>"></a>
-								<a class="pinterest-icon last" href="<?php if($ptlink==null) echo "#"; else echo $ptlink; ?>"></a>
+								<a class="facebook-icon" href="<?php if($fblink==null) echo "#"; else echo $fblink; ?>" target="_blank"></a>
+								<a class="twitter-icon" href="<?php if($twlink==null) echo "#"; else echo $twlink; ?>" target="_blank"></a>
+								<a class="instagram-icon" href="<?php if($inlink==null) echo "#"; else echo $inlink; ?>" target="_blank"></a>
+								<a class="pinterest-icon last" href="<?php if($ptlink==null) echo "#"; else echo $ptlink; ?>" target="_blank"></a>
 							</div>
 						</div>
 						<div class="shortcode col3-1">
