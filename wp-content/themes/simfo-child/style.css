@@ -564,3 +564,16 @@ input:-moz-placeholder { color:#612b85; }
 #commentform textarea{
     width: 300%;
 }
+
+/*
+* HOMEPAGE COLUMNS WIDTH
+*/
+
+.leftc{
+    margin-left: 0 !important;
+    width: 50% !important;
+}
+.rightc{
+    margin-left: 1% !important;
+    width: 48.8% !important;
+}
