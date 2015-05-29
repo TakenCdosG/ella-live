@@ -564,6 +564,12 @@ input:-moz-placeholder { color:#612b85; }
 #commentform textarea{
     width: 300%;
 }
+/*
+* FEATURED BRAND ICONS ADJUSTMENTS
+*/
+div#bricon1{
+    margin-left: -3.2% !important;
+}
 
 /*
 * HOMEPAGE COLUMNS WIDTH
