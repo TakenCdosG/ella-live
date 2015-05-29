@@ -618,9 +618,7 @@ input:-moz-placeholder { color:#612b85; }
     div#widget-2751.ella-wrapper div.widget-text.over-image p span.img-subt{
         font-size: 12pt !important;
     }
-    div.e-logo{
-       display: none;
-    }
+
 }
 
 @media screen and (min-width: 330px) and (max-width: 349px) {
@@ -657,5 +655,13 @@ input:-moz-placeholder { color:#612b85; }
     }
     div#widget-2771.ella-wrapper{
         margin-top: 495px;
+    }
+}
+/*
+* HIDING LOGO FOR RESOLUTIONS SMALLER THAB 768
+*/
+@media screen and (max-width: 768px){
+    div.e-logo{
+        display: none;
     }
 }
