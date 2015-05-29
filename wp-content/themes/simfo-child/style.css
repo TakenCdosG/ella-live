@@ -567,8 +567,9 @@ input:-moz-placeholder { color:#612b85; }
 /*
 * FEATURED BRAND ICONS ADJUSTMENTS
 */
-div#bricon1{
-    margin-left: -3.2% !important;
+div#bricon1,div#bricon2,div#bricon3,div#bricon4,div#bricon5{
+    margin-left: 1.5% !important;
+    width: 17% !important;
 }
 
 /*
