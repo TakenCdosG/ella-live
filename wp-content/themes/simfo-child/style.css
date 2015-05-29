@@ -568,12 +568,94 @@ input:-moz-placeholder { color:#612b85; }
 /*
 * HOMEPAGE COLUMNS WIDTH
 */
+@media screen and (min-width: 981px) {
 
-.leftc{
-    margin-left: 0 !important;
-    width: 50% !important;
+    .leftc {
+        margin-left: 0 !important;
+        width: 50% !important;
+    }
+
+    .rightc {
+        margin-left: 1% !important;
+        width: 48.8% !important;
+    }
 }
-.rightc{
-    margin-left: 1% !important;
-    width: 48.8% !important;
+/*
+* MEDIA QUERIES FOR HOMEPAGE
+*/
+@media screen and (min-width: 320px) and (max-width: 480px) {
+
+    div#widget-2780.ella-wrapper div.widget-text.over-image {
+        margin-top: -144px;
+        margin-left: -21px;
+    }
+
+    div#widget-2780.ella-wrapper div.widget-text.over-image p span {
+        font-size: 30pt !important;
+    }
+
+    div#widget-2780.ella-wrapper div.widget-text.over-image p span.img-subt {
+        font-size: 12pt !important;
+    }
+
+    /* TRY TO REARRANGE THE DIVS INTO PROPER ORDER */
+    div#widget-2771.ella-wrapper{
+        margin-top: 410px;
+    }
+
+    div#widget-2751.ella-wrapper {
+        position: relative;
+        margin-top: -770px;
+    }
+    div#widget-2751.ella-wrapper div.widget-text.over-image{
+        margin-left: -34px;
+        margin-top: 144px;
+    }
+    div#widget-2751.ella-wrapper div.widget-text.over-image p span{
+        font-size: 30pt !important;
+    }
+
+    div#widget-2751.ella-wrapper div.widget-text.over-image p span.img-subt{
+        font-size: 12pt !important;
+    }
+    div.e-logo{
+       display: none;
+    }
+}
+
+@media screen and (min-width: 330px) and (max-width: 349px) {
+    div#widget-2751.ella-wrapper {
+        position: relative;
+        margin-top: -775px;
+    }
+}
+
+@media screen and (min-width: 350px) and (max-width: 359px) {
+    div#widget-2751.ella-wrapper {
+        position: relative;
+        margin-top: -800px;
+    }
+    div#widget-2771.ella-wrapper{
+        margin-top: 438px;
+    }
+}
+
+@media screen and (min-width: 360px) and (max-width: 374px) {
+    div#widget-2751.ella-wrapper {
+        position: relative;
+        margin-top: -835px;
+    }
+    div#widget-2771.ella-wrapper{
+        margin-top: 475px;
+    }
+}
+
+@media screen and (min-width: 375px) and (max-width: 399px) {
+    div#widget-2751.ella-wrapper {
+        position: relative;
+        margin-top: -855px;
+    }
+    div#widget-2771.ella-wrapper{
+        margin-top: 495px;
+    }
 }
