@@ -665,6 +665,15 @@ div#bricon1,div#bricon2,div#bricon3,div#bricon4,div#bricon5{
     }
 }
 /*
+* BRAND ICONS REARRANGING
+*/
+@media screen and (min-width: 320px) and (max-width: 600px){
+    div#bricon1,div#bricon2,div#bricon3,div#bricon4,div#bricon5{
+        width: 30% !important;
+    }
+}
+
+/*
 * HIDING LOGO FOR RESOLUTIONS SMALLER THAB 768
 */
 @media screen and (max-width: 768px){
