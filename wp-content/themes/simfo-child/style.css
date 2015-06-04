@@ -28,7 +28,7 @@ Version:        0.1.0
 .ella-wrapper { background: url("img/widgets-border.png") no-repeat left top; background-size: 100% 100%; padding: 1px; width: 100%; height: auto; position: relative; margin-bottom: 20px; }
 .widget-back-image { width: 100%; height: auto; z-index: 10; }
 .widget-back-image img { width: 100%; height: auto; display: block; z-index: 20; }
-.widget-text { width: 100%; padding: 6px 28px; max-width: 430px; }
+.widget-text { width: 90%; margin: 6px 25px; max-width: 430px; }
 .widget-text.over-image { position: absolute; top: 0; left: 0; z-index: 50; }
 
 .last:after { display: block; clear: both; content: ''; }
@@ -533,11 +533,134 @@ p.form-submit input#submit {
 /**BOTTOM LINKS**/
 
 /*
-* MARIJKE TANSEY FONT SHADOW
+* HOME WIDGETS TEXT OVER IMAGE STYLES
 */
 span.mts{
     text-shadow: 2px 1px 1px rgba(0, 0, 0, 1);
+    color: #ffffff;
+    font-size: 36pt;
 }
+div.widget-text.over-image p span.img-subt, div.widget-text p span.img-subt{
+    background: #000000 !important;
+    color: #ffffff !important;
+    font-size: 12pt !important;
+}
+div#widget-2751.ella-wrapper div.widget-text.over-image p span{
+    color: #000000;
+    font-size: 36pt;
+}
+@media screen and (min-width: 320px) and (max-width: 479px) {
+    div#widget-2780.ella-wrapper div.widget-text.over-image{
+        margin-top: 30%;
+        line-height: 1em;
+    }
+    div#widget-2751.ella-wrapper div.widget-text.over-image{
+        margin-top: 75%;
+        margin-left: 1%;
+    }
+    div#widget-2780.ella-wrapper div.widget-text.over-image p span,div#widget-2751.ella-wrapper div.widget-text.over-image p span{
+        font-size: 21pt;
+    }
+    div.widget-text.over-image p span.img-subt,div.widget-text p span.img-subt{
+        font-size: 10pt !important;
+    }
+    div#widget-2751 div.widget-back-image img{
+        height: 500px;
+    }
+    div#widget-2771.ella-wrapper{
+        margin-top: 530px;
+    }
+    div#widget-2751.ella-wrapper {
+        position: relative;
+        margin-top: -865px;
+    }
+    div#widget-2771.ella-wrapper div.widget-text p span.hwt,div#widget-2794.ella-wrapper div.widget-text p span.hwt{
+        font-size: 16pt;
+    }
+}
+@media screen and (min-width:480px) and (max-width: 579px)  {
+    div#widget-2780 div.widget-back-image img,div#widget-2751 div.widget-back-image img{
+        height: 300px;
+    }
+    div#widget-2780.ella-wrapper div.widget-text.over-image{
+        margin-top: 65%;
+        line-height: 1em;
+    }
+    div#widget-2751.ella-wrapper div.widget-text.over-image{
+        margin-top: 60%;
+        margin-left: 3%;
+    }
+    div#widget-2780.ella-wrapper div.widget-text.over-image p span,div#widget-2751.ella-wrapper div.widget-text.over-image p span{
+        font-size: 21pt;
+    }
+    div.widget-text.over-image p span.img-subt,div.widget-text p span.img-subt{
+        font-size: 10pt !important;
+    }
+    div#widget-2794.ella-wrapper{
+        margin-left: 107%;
+        margin-top: -167px;
+    }
+    div#widget-2771.ella-wrapper div.widget-text p span.hwt,div#widget-2794.ella-wrapper div.widget-text p span.hwt{
+        font-size: 16pt;
+    }
+}
+@media screen and (min-width: 580px) and (max-width: 768px){
+    div#widget-2780.ella-wrapper div.widget-text.over-image{
+        margin-top: 65%;
+        line-height: 1em;
+    }
+    div#widget-2751.ella-wrapper div.widget-text.over-image{
+        margin-top: 75%;
+        margin-left: -15%;
+    }
+    div#widget-2780.ella-wrapper div.widget-text.over-image p span,div#widget-2751.ella-wrapper div.widget-text.over-image p span{
+        font-size: 27pt;
+    }
+    div.widget-text.over-image p span.img-subt,div.widget-text p span.img-subt{
+        font-size: 10pt !important;
+    }
+    div#widget-2780 div.widget-back-image img,div#widget-2751 div.widget-back-image img{
+        height: 460px;
+    }
+    div#widget-2794.ella-wrapper{
+        margin-left: 107%;
+        margin-top: -166px;
+    }
+    div#widget-2771.ella-wrapper div.widget-text p span.hwt,div#widget-2794.ella-wrapper div.widget-text p span.hwt{
+        font-size: 20pt;
+    }
+}
+@media screen and (min-width: 769px) and (max-width: 980px){
+    div#widget-2780.ella-wrapper div.widget-text.over-image{
+        margin-top: 32%;
+    }
+    div#widget-2751.ella-wrapper div.widget-text.over-image{
+        margin-top: 100%;
+        margin-left: -13%;
+    }
+    div#widget-2780 div.widget-back-image img{
+        height: 300px;
+    }
+    div#widget-2751 div.widget-back-image img{
+        height: 668px;
+    }
+}
+@media screen and (min-width: 981px){
+    div#widget-2780 div.widget-back-image img{
+        height: 400px;
+    }
+   div#widget-2751 div.widget-back-image img{
+       height: 768px;
+   }
+    div#widget-2780.ella-wrapper div.widget-text.over-image{
+        margin-top: 32%;
+    }
+    div#widget-2751.ella-wrapper div.widget-text.over-image{
+        margin-top: 75%;
+        margin-left: -10%;
+    }
+}
+
 /*
 * EMAIL INPUT STYLES
 */
@@ -588,83 +711,6 @@ div#bricon1,div#bricon2,div#bricon3,div#bricon4,div#bricon5{
     }
 }
 /*
-* MEDIA QUERIES FOR HOMEPAGE
-*/
-@media screen and (min-width: 320px) and (max-width: 480px) {
-
-    div#widget-2780.ella-wrapper div.widget-text.over-image {
-        margin-top: -144px;
-        margin-left: -21px;
-    }
-
-    div#widget-2780.ella-wrapper div.widget-text.over-image p span {
-        font-size: 30pt !important;
-    }
-
-    div#widget-2780.ella-wrapper div.widget-text.over-image p span.img-subt {
-        font-size: 12pt !important;
-    }
-
-    /* TRY TO REARRANGE THE DIVS INTO PROPER ORDER */
-    div#widget-2771.ella-wrapper{
-        margin-top: 410px;
-    }
-
-    div#widget-2751.ella-wrapper {
-        position: relative;
-        margin-top: -770px;
-    }
-    div#widget-2751.ella-wrapper div.widget-text.over-image{
-        margin-left: -34px;
-        margin-top: 144px;
-    }
-    div#widget-2751.ella-wrapper div.widget-text.over-image p span{
-        font-size: 30pt !important;
-    }
-
-    div#widget-2751.ella-wrapper div.widget-text.over-image p span.img-subt{
-        font-size: 12pt !important;
-    }
-
-}
-
-@media screen and (min-width: 330px) and (max-width: 349px) {
-    div#widget-2751.ella-wrapper {
-        position: relative;
-        margin-top: -775px;
-    }
-}
-
-@media screen and (min-width: 350px) and (max-width: 359px) {
-    div#widget-2751.ella-wrapper {
-        position: relative;
-        margin-top: -800px;
-    }
-    div#widget-2771.ella-wrapper{
-        margin-top: 438px;
-    }
-}
-
-@media screen and (min-width: 360px) and (max-width: 374px) {
-    div#widget-2751.ella-wrapper {
-        position: relative;
-        margin-top: -835px;
-    }
-    div#widget-2771.ella-wrapper{
-        margin-top: 475px;
-    }
-}
-
-@media screen and (min-width: 375px) and (max-width: 399px) {
-    div#widget-2751.ella-wrapper {
-        position: relative;
-        margin-top: -855px;
-    }
-    div#widget-2771.ella-wrapper{
-        margin-top: 495px;
-    }
-}
-/*
 * BRAND ICONS REARRANGING
 */
 @media screen and (min-width: 320px) and (max-width: 600px){
@@ -672,7 +718,6 @@ div#bricon1,div#bricon2,div#bricon3,div#bricon4,div#bricon5{
         width: 30% !important;
     }
 }
-
 /*
 * HIDING LOGO FOR RESOLUTIONS SMALLER THAB 768
 */
