@@ -549,6 +549,9 @@ div#widget-2751.ella-wrapper div.widget-text.over-image p span{
     color: #000000;
     font-size: 36pt;
 }
+div#widget-2771.ella-wrapper div.widget-text p span.hwt,div#widget-2794.ella-wrapper div.widget-text p span.hwt{
+    font-size: 24pt;
+}
 @media screen and (min-width: 320px) and (max-width: 479px) {
     div#widget-2780.ella-wrapper div.widget-text.over-image{
         margin-top: 30%;
@@ -598,7 +601,7 @@ div#widget-2751.ella-wrapper div.widget-text.over-image p span{
     }
     div#widget-2794.ella-wrapper{
         margin-left: 107%;
-        margin-top: -167px;
+        margin-top: -172px;
     }
     div#widget-2771.ella-wrapper div.widget-text p span.hwt,div#widget-2794.ella-wrapper div.widget-text p span.hwt{
         font-size: 16pt;
@@ -624,7 +627,7 @@ div#widget-2751.ella-wrapper div.widget-text.over-image p span{
     }
     div#widget-2794.ella-wrapper{
         margin-left: 107%;
-        margin-top: -166px;
+        margin-top: -175px;
     }
     div#widget-2771.ella-wrapper div.widget-text p span.hwt,div#widget-2794.ella-wrapper div.widget-text p span.hwt{
         font-size: 20pt;
@@ -642,7 +645,7 @@ div#widget-2751.ella-wrapper div.widget-text.over-image p span{
         height: 300px;
     }
     div#widget-2751 div.widget-back-image img{
-        height: 634px;
+        height: 658px;
     }
 }
 @media screen and (min-width: 981px){
@@ -650,7 +653,7 @@ div#widget-2751.ella-wrapper div.widget-text.over-image p span{
         height: 400px;
     }
    div#widget-2751 div.widget-back-image img{
-       height: 735px;
+       height: 758px;
    }
     div#widget-2780.ella-wrapper div.widget-text.over-image{
         margin-top: 32%;
