@@ -585,9 +585,7 @@ span.homeslider-button{
     div#widget-2771.ella-wrapper div.widget-text p span.hwt,div#widget-2794.ella-wrapper div.widget-text p span.hwt{
         font-size: 16pt;
     }
-    div#crellyslider-2 div.crellyslider, div#crellyslider-2 div.crellyslider ul.cs-slides li{
-        height: 230px !important;
-    }
+
     div span.homeslider-subt{
         top:70px !important;
         position: relative;
@@ -610,6 +608,76 @@ span.homeslider-button{
         top: 20%;
     }
 }
+/*
+* MEDIA QUERIES FOR HOMESLIDER FROM 320 TO 480
+*/
+@media screen and (min-width: 320px) and (max-width: 340px){
+    div#crellyslider-2 div.crellyslider, div#crellyslider-2 div.crellyslider ul.cs-slides li{
+        height: 230px !important;
+    }
+}
+@media screen and (min-width: 341px) and (max-width: 360px){
+    div#crellyslider-2 div.crellyslider, div#crellyslider-2 div.crellyslider ul.cs-slides li{
+        height: 240px !important;
+    }
+}
+@media screen and (min-width: 361px) and (max-width: 380px){
+    div#crellyslider-2 div.crellyslider, div#crellyslider-2 div.crellyslider ul.cs-slides li{
+        height: 250px !important;
+    }
+}
+@media screen and (min-width: 381px) and (max-width: 400px){
+    div#crellyslider-2 div.crellyslider, div#crellyslider-2 div.crellyslider ul.cs-slides li{
+        height: 260px !important;
+    }
+}
+@media screen and (min-width: 401px) and (max-width: 420px){
+    div#crellyslider-2 div.crellyslider, div#crellyslider-2 div.crellyslider ul.cs-slides li{
+        height: 270px !important;
+    }
+    div span.homeslider-subt{
+        top:75px !important;
+    }
+    div span.homeslider-button{
+        top:100px !important;
+    }
+}
+@media screen and (min-width: 421px) and (max-width: 440px){
+    div#crellyslider-2 div.crellyslider, div#crellyslider-2 div.crellyslider ul.cs-slides li{
+        height: 280px !important;
+    }
+    div span.homeslider-subt{
+        top:80px !important;
+    }
+    div span.homeslider-button{
+        top:100px !important;
+    }
+}
+@media screen and (min-width: 441px) and (max-width: 460px){
+    div#crellyslider-2 div.crellyslider, div#crellyslider-2 div.crellyslider ul.cs-slides li{
+        height: 290px !important;
+    }
+    div span.homeslider-subt{
+        top:85px !important;
+    }
+    div span.homeslider-button{
+        top:100px !important;
+    }
+}
+@media screen and (min-width: 461px) and (max-width: 479px){
+    div#crellyslider-2 div.crellyslider, div#crellyslider-2 div.crellyslider ul.cs-slides li{
+        height: 295px !important;
+    }
+    div span.homeslider-subt{
+        top:85px !important;
+    }
+    div span.homeslider-button{
+        top:100px !important;
+    }
+}
+/* END HOME SLIDER MEDIA QUERIES 320-480 */
+
+/**/
 @media screen and (min-width:480px) and (max-width: 579px)  {
     div#widget-2780 div.widget-back-image img,div#widget-2751 div.widget-back-image img{
         height: 300px;
