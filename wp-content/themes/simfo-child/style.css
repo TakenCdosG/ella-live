@@ -552,6 +552,11 @@ div#widget-2751.ella-wrapper div.widget-text.over-image p span{
 div#widget-2771.ella-wrapper div.widget-text p span.hwt,div#widget-2794.ella-wrapper div.widget-text p span.hwt{
     font-size: 24pt;
 }
+span.homeslider-button{
+    color:#ffffff;
+    background-color: #000000;
+}
+
 @media screen and (min-width: 320px) and (max-width: 479px) {
     div#widget-2780.ella-wrapper div.widget-text.over-image{
         margin-top: 30%;
@@ -579,6 +584,30 @@ div#widget-2771.ella-wrapper div.widget-text p span.hwt,div#widget-2794.ella-wra
     }
     div#widget-2771.ella-wrapper div.widget-text p span.hwt,div#widget-2794.ella-wrapper div.widget-text p span.hwt{
         font-size: 16pt;
+    }
+    div#crellyslider-2 div.crellyslider, div#crellyslider-2 div.crellyslider ul.cs-slides li{
+        height: 230px !important;
+    }
+    div span.homeslider-subt{
+        top:70px !important;
+        position: relative;
+        line-height: 1em !important;
+    }
+    div span.homeslider-button{
+        top:96px !important;
+        position: relative;
+        color:#ffffff;
+        background-color: #000000;
+        padding: 6px !important;
+    }
+    span.homeslider-subt{
+        font-size: 25pt !important;
+    }
+    span.homeslider-button{
+        font-size: 10pt !important;
+    }
+    #crellyslider-2 .cs-controls{
+        top: 20%;
     }
 }
 @media screen and (min-width:480px) and (max-width: 579px)  {
