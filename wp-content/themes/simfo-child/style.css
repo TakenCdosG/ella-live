@@ -536,9 +536,9 @@ p.form-submit input#submit {
 * HOME WIDGETS TEXT OVER IMAGE STYLES
 */
 span.mts{
-    text-shadow: 2px 1px 1px rgba(0, 0, 0, 1);
-    color: #ffffff;
-    font-size: 36pt;
+    text-shadow: 2px 1px 1px rgba(0, 0, 0, 1) !important;
+    color: #ffffff !important;
+    font-size: 36pt !important;
 }
 div.widget-text.over-image p span.img-subt, div.widget-text p span.img-subt{
     background: #000000 !important;
