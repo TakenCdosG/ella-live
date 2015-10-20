@@ -1,5 +1,6 @@
 <?php
 
+if (!defined('ABSPATH')) exit; // Exit if accessed directly
 $languages = $this -> language_getlanguages();
 
 ?>
@@ -8,6 +9,9 @@ $languages = $this -> language_getlanguages();
 	<h2><?php _e('Save a Gallery', $this -> plugin_name); ?></h2>
 	
 	<form action="<?php echo $this -> url; ?>&amp;method=save" method="post">
+		
+		<?php wp_nonce_field('slideshow-galleries-save_' . $this -> Gallery -> data -> id); ?>
+		
 		<input type="hidden" name="Gallery[id]" value="<?php echo $this -> Gallery -> data -> id; ?>" />
 	
 		<table class="form-table">
@@ -17,7 +21,7 @@ $languages = $this -> language_getlanguages();
 					<?php echo $this -> Html -> help(__('Give this gallery a title/name for your own reference.', $this -> plugin_name)); ?></th>
 					<td>
 						<?php if ($this -> language_do()) : ?>
-							<?php $titles = qtrans_split($this -> Gallery -> data -> title); ?>
+							<?php $titles = $this -> language_split($this -> Gallery -> data -> title); ?>
 							<div id="gallery-title-tabs">
 								<ul>
 									<?php foreach ($languages as $language) : ?>
@@ -40,7 +44,7 @@ $languages = $this -> language_getlanguages();
 							<input type="text" class="widefat" name="Gallery[title]" value="<?php echo esc_attr(stripslashes($this -> Gallery -> data -> title)); ?>" id="Gallery_title" />
 						<?php endif; ?>
 						<span class="howto"><?php _e('Title of this gallery for identification purposes.', $this -> plugin_name); ?></span>
-						<?php echo (!empty($this -> Gallery -> errors['title'])) ? '<span class="error">' . $this -> Gallery -> errors['title'] . '</span>' : ''; ?>
+						<?php echo (!empty($this -> Gallery -> errors['title'])) ? '<span class="slideshow_error">' . $this -> Gallery -> errors['title'] . '</span>' : ''; ?>
 					</td>
 				</tr>
 			</tbody>

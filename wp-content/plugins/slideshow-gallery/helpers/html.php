@@ -1,4 +1,6 @@
 <?php
+	
+if (!defined('ABSPATH')) exit; // Exit if accessed directly
 
 class GalleryHtmlHelper extends GalleryPlugin {
 
@@ -13,7 +15,7 @@ class GalleryHtmlHelper extends GalleryPlugin {
 			?>
 			
 			<span class="galleryhelp">
-				<a href="" onclick="return false;" title="<?php echo esc_attr(stripslashes($help)); ?>"></a>
+				<a href="" onclick="return false;" title="<?php echo esc_attr(stripslashes($help)); ?>"><i class="fa fa-question-circle"></i></a>
 			</span>
 			
 			<?php

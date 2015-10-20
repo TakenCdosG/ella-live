@@ -1,5 +1,14 @@
+<?php
+	
+if (!defined('ABSPATH')) exit; // Exit if accessed directly	
+	
+?>
+
 	<?php if (!empty($slides)) : ?>
 		<form onsubmit="if (!confirm('<?php _e('Are you sure you wish to execute this action on the selected slides?', $this -> plugin_name); ?>')) { return false; }" action="<?php echo $this -> url; ?>&amp;method=mass" method="post">
+			
+			<?php wp_nonce_field($this -> sections -> slides . '-bulkaction'); ?>
+			
 			<div class="tablenav">
 				<div class="alignleft actions">
 					<?php if (!empty($_GET['page']) && $_GET['page'] == $this -> sections -> galleries) : ?>
@@ -29,7 +38,7 @@
 			<table class="widefat">
 				<thead>
 					<tr>
-						<th class="check-column"><input type="checkbox" name="checkboxall" id="checkboxall" value="checkboxall" /></th>
+						<td class="check-column"><input type="checkbox" name="checkboxall" id="checkboxall" value="checkboxall" /></td>
 						<th class="column-id <?php echo ($orderby == "id") ? 'sorted ' . $order : 'sortable desc'; ?>">
 							<a href="<?php echo GalleryHtmlHelper::retainquery('orderby=id&order=' . (($orderby == "id") ? $otherorder : "asc")); ?>">
 								<span><?php _e('ID', $this -> plugin_name); ?></span>
@@ -71,7 +80,7 @@
 				</thead>
 				<tfoot>
 					<tr>
-						<th class="check-column"><input type="checkbox" name="checkboxall" id="checkboxall" value="checkboxall" /></th>
+						<td class="check-column"><input type="checkbox" name="checkboxall" id="checkboxall" value="checkboxall" /></td>
 						<th class="column-id <?php echo ($orderby == "id") ? 'sorted ' . $order : 'sortable desc'; ?>">
 							<a href="<?php echo GalleryHtmlHelper::retainquery('orderby=id&order=' . (($orderby == "id") ? $otherorder : "asc")); ?>">
 								<span><?php _e('ID', $this -> plugin_name); ?></span>
@@ -115,10 +124,10 @@
 					<?php foreach ($slides as $slide) : ?>
 						<tr class="<?php echo $class = (empty($class)) ? 'alternate' : ''; ?>">
 							<th class="check-column"><input type="checkbox" name="Slide[checklist][]" value="<?php echo $slide -> id; ?>" id="checklist<?php echo $slide -> id; ?>" /></th>
-							<td><?php echo $slide -> id; ?></td>
+							<td><label for="checklist<?php echo $slide -> id; ?>"><?php echo $slide -> id; ?></label></td>
 							<td style="width:75px;">
 								<?php $image = $slide -> image; ?>
-								<a href="<?php echo $slide -> image_path; ?>" title="<?php echo __($slide -> title); ?>" class="colorbox" rel="slides"><img class="dropshadow" src="<?php echo $this -> Html -> bfithumb_image_src($slide -> image_path, 50, 50, 100); ?>" alt="<?php echo $this -> Html -> sanitize(__($slide -> title)); ?>" /></a>
+								<a href="<?php echo $slide -> image_path; ?>" title="<?php echo __($slide -> title); ?>" class="colorbox" rel="slides"><img class="img-rounded" src="<?php echo $this -> Html -> bfithumb_image_src($slide -> image_path, 50, 50, 100); ?>" alt="<?php echo $this -> Html -> sanitize(__($slide -> title)); ?>" /></a>
 							</td>
 							<td>
                             	<a class="row-title" href="<?php echo $this -> url; ?>&amp;method=save&amp;id=<?php echo $slide -> id; ?>" title=""><?php echo __($slide -> title); ?></a>
@@ -144,7 +153,7 @@
                                 	<span style="color:green;"><?php _e('Yes', $this -> plugin_name); ?></span>
                                 	<small>(<a href="<?php echo $slide -> link; ?>" title="" target="_blank"><?php _e('Open', $this -> plugin_name); ?></a>)</small>
                                 <?php else : ?>
-                                	<span style="color:red;"><?php _e('No', $this -> plugin_name); ?></span>
+                                	<span class="slideshow_error"><?php _e('No', $this -> plugin_name); ?></span>
                                 <?php endif; ?>
                             </td>
 							<td><abbr title="<?php echo $slide -> modified; ?>"><?php echo date("Y-m-d", strtotime($slide -> modified)); ?></abbr></td>

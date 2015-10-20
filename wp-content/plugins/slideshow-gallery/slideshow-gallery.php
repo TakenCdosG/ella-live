@@ -6,7 +6,7 @@ Plugin URI: http://tribulant.com/plugins/view/13/wordpress-slideshow-gallery
 Author: Tribulant Software
 Author URI: http://tribulant.com
 Description: Feature content in a JavaScript powered slideshow gallery showcase on your WordPress website. The slideshow is flexible and all aspects can easily be configured. Embedding or hardcoding the slideshow gallery is a breeze. To embed into a post/page, simply insert <code>[tribulant_slideshow]</code> into its content with an optional <code>post_id</code> parameter. To hardcode into any PHP file of your WordPress theme, simply use <code>&lt;?php if (function_exists('slideshow')) { slideshow($output = true, $post_id = false, $gallery_id = false, $params = array()); } ?&gt;</code>.
-Version: 1.5.3
+Version: 1.5.3.4
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: slideshow gallery, slideshow, gallery, slider, jquery, bfithumb, galleries, photos, images
@@ -14,11 +14,14 @@ Text Domain: slideshow-gallery
 Domain Path: /languages
 */
 
+if (!defined('ABSPATH')) exit; // Exit if accessed directly
+
 if (!defined('DS')) { define('DS', DIRECTORY_SEPARATOR); }
 
 $path = dirname(__FILE__) . DS . 'slideshow-gallery-plugin.php';
 if (file_exists($path)) {
 	require_once(dirname(__FILE__) . DS . 'includes' . DS . 'checkinit.php');
+	require_once(dirname(__FILE__) . DS . 'includes' . DS . 'constants.php');
 	require_once($path);
 }
 
@@ -30,10 +33,11 @@ if (!class_exists('Gallery')) {
 			$this -> url = $url[0];
 			$this -> referer = (empty($_SERVER['HTTP_REFERER'])) ? $this -> url : $_SERVER['HTTP_REFERER'];
 			$this -> plugin_name = basename(dirname(__FILE__));
-			$this -> plugin_file = plugin_basename(__FILE__);
+			$this -> plugin_file = plugin_basename(__FILE__);	
 			$this -> register_plugin($this -> plugin_name, __FILE__);
 			
 			//WordPress action hooks
+			$this -> add_action('plugins_loaded');
 			$this -> add_action('wp_head');
 			$this -> add_action('wp_footer');
 			$this -> add_action('admin_menu');
@@ -53,7 +57,7 @@ if (!class_exists('Gallery')) {
 			//WordPress filter hooks
 			$this -> add_filter('mce_buttons');
 			$this -> add_filter('mce_external_plugins');
-			$this -> add_filter("plugin_action_links_" . $this -> plugin_file, 'plugin_settings_link', 10, 1);
+			$this -> add_filter("plugin_action_links_" . $this -> plugin_file, 'plugin_action_links', 10, 4);
 			
 			$this -> add_action('slideshow_ratereviewhook', 'ratereview_hook');
 			
@@ -65,10 +69,20 @@ if (!class_exists('Gallery')) {
 			$this -> updating_plugin();
 		}
 		
-		function plugin_settings_link($links) { 
-			$settings_link = '<a href="' . admin_url('admin.php') . '?page=' . $this -> sections -> settings . '">' . __('Settings', $this -> plugin_name) . '</a>'; 
-			array_unshift($links, $settings_link); 
-			return $links; 
+		function plugin_action_links($actions = null, $plugin_file = null, $plugin_data = null, $context = null) {
+			$this_plugin = plugin_basename(__FILE__);
+			
+			if (!empty($plugin_file) && $plugin_file == $this_plugin) {
+				$actions[] = '<a href="" onclick="jQuery.colorbox({href:ajaxurl + \'?action=slideshow_serialkey\'}); return false;" id="slideshow_submitseriallink">' . __('Serial Key', $this -> plugin_name) . '</a>';	
+				$actions[] = '<a href="' . admin_url('admin.php?page=' . $this -> sections -> settings) . '">' . __('Settings', $this -> plugin_name) . '</a>';
+			}
+			
+			return $actions;
+		}
+		
+		function init() {
+			
+			
 		}
 		
 		function init_textdomain() {		
@@ -92,6 +106,14 @@ if (!class_exists('Gallery')) {
 					load_plugin_textdomain($this -> plugin_name, false, dirname(plugin_basename(__FILE__)) . DS . 'languages' . DS);
 				}
 			}			
+		}
+		
+		function plugins_loaded() {		
+			$this -> ci_initialize();
+				
+			if ($this -> language_do()) {
+	        	add_filter('gettext', array($this, 'language_useordefault'), 0);
+	        }
 		}
 		
 		function wp_head() {
@@ -144,6 +166,8 @@ if (!class_exists('Gallery')) {
 			$this -> menus['slideshow-galleries'] = add_submenu_page($this -> sections -> slides, __('Manage Galleries', $this -> plugin_name), __('Manage Galleries', $this -> plugin_name), 'slideshow_galleries', $this -> sections -> galleries, array($this, 'admin_galleries'));
 			$this -> menus['slideshow-settings'] = add_submenu_page($this -> sections -> slides, __('Configuration', $this -> plugin_name), __('Configuration', $this -> plugin_name), 'slideshow_settings', $this -> sections -> settings, array($this, 'admin_settings'));
 			
+			do_action('slideshow_admin_menu', $this -> menus);
+			
 			add_action('admin_head-' . $this -> menus['slideshow-settings'], array($this, 'admin_head_gallery_settings'));
 			
 			add_dashboard_page(sprintf('Slideshow Gallery %s', $this -> version), sprintf('Slideshow Gallery %s', $this -> version), 'read', $this -> sections -> about, array($this, 'slideshow_gallery_about'));
@@ -173,51 +197,79 @@ if (!class_exists('Gallery')) {
 		}
 		
 		function admin_notices() {
-			$this -> check_uploaddir();
-		
-			if (!empty($_GET[$this -> pre . 'message'])) {		
-				$msg_type = (!empty($_GET[$this -> pre . 'updated'])) ? 'msg' : 'err';
-				call_user_func(array($this, 'render_' . $msg_type), $_GET[$this -> pre . 'message']);
-			}
 			
-			$showmessage_ratereview = $this -> get_option('showmessage_ratereview');
-			if (!empty($showmessage_ratereview)) {
-				$message = sprintf(__('You have been using the %s for %s days or more. Please consider to %s it or say it %s on %s.', $this -> plugin_name), 
-				'<a href="https://wordpress.org/plugins/slideshow-gallery/" target="_blank">Tribulant Slideshow Gallery plugin</a>',
-				$showmessage_ratereview,
-				'<a class="button" href="https://wordpress.org/support/view/plugin-reviews/slideshow-gallery?rate=5#postform" target="_blank">Rate</a>',
-				'<a class="button" href="https://wordpress.org/plugins/slideshow-gallery/?compatibility[version]=' . get_bloginfo('version') . '&compatibility[topic_version]=' . $this -> version . '&compatibility[compatible]=1" target="_blank">Works</a>',
-				'<a href="https://wordpress.org/plugins/slideshow-gallery/" target="_blank">WordPress.org</a>');
-				
-				$message .= '<a href="' . admin_url('admin.php?page=' . $this -> sections -> settings . '&slideshow_method=hidemessage&message=ratereview') . '" class="slideshow-icon-delete"></a>';
-				
-				$this -> render_msg($message);
-			}
+			if (is_admin()) {
 			
-			/* Check if wp_head and wp_footer functions exist */
-			$url = add_query_arg(array('test-head' => 1, 'test-footer' => 1), home_url());
-			if ($response = wp_remote_request($url)) {
-				if (!is_wp_error($response)) {
-					$html = $response['body'];
-					$showmessage_wphead = $this -> get_option('showmessage_wphead');
-					$showmessage_wpfoot = $this -> get_option('showmessage_wpfoot');
+				$this -> check_uploaddir();
+			
+				if (!empty($_GET[$this -> pre . 'message'])) {						
+					$msg_type = (!empty($_GET[$this -> pre . 'updated'])) ? 'msg' : 'err';
+					call_user_func(array($this, 'render_' . $msg_type), $_GET[$this -> pre . 'message']);
+				}
+				
+				$showmessage_ratereview = $this -> get_option('showmessage_ratereview');
+				if (!empty($showmessage_ratereview)) {
+					$message = sprintf(__('You have been using the %s for %s days or more. Please consider to %s it or say it %s on %s.', $this -> plugin_name), 
+					'<a href="https://wordpress.org/plugins/slideshow-gallery/" target="_blank">Tribulant Slideshow Gallery plugin</a>',
+					$showmessage_ratereview,
+					'<a class="button" href="https://wordpress.org/support/view/plugin-reviews/slideshow-gallery?rate=5#postform" target="_blank"><i class="fa fa-star"></i> Rate</a>',
+					'<a class="button" href="https://wordpress.org/plugins/slideshow-gallery/?compatibility[version]=' . get_bloginfo('version') . '&compatibility[topic_version]=' . $this -> version . '&compatibility[compatible]=1" target="_blank"><i class="fa fa-check"></i> Works</a>',
+					'<a href="https://wordpress.org/plugins/slideshow-gallery/" target="_blank">WordPress.org</a>');
 					
-					if (!strstr($html, '<!-- wp_head -->')) {
-						if (empty($showmessage_wphead) || (!empty($showmessage_wphead) && $showmessage_wphead != "hidden")) {
-							$this -> update_option('showmessage_wphead', 1);
-							$this -> render_err(sprintf(__('Slideshow Gallery: It seems like your theme is missing the wp_head() function. See %s. %s', $this -> plugin_name), '<a href="http://codex.wordpress.org/Function_Reference/wp_head" target="_blank">' . __('documentation', $this -> plugin_name) . '</a>', '<a href="' . admin_url('admin.php?page=' . $this -> sections -> settings . '&slideshow_method=hidemessage&message=wphead') . '" class="slideshow-icon-delete"></a>'));
+					$dismissable = admin_url('admin.php?page=' . $this -> sections -> settings . '&slideshow_method=hidemessage&message=ratereview');
+					$this -> render_msg($message, $dismissable, false);
+				}
+				
+				/* Serial key submission message */
+				if (!$this -> ci_serial_valid() && (empty($_GET['page']) || $_GET['page'] != $this -> sections -> submitserial)) {				
+					$hidemessage_submitserial = $this -> get_option('hidemessage_submitserial');
+				
+					if (empty($hidemessage_submitserial)) {
+						$message = sprintf(__('To activate Slideshow Gallery PRO, please submit a serial key, else %s', $this -> plugin_name), '<a href="' . admin_url('admin.php?page=' . $this -> sections -> welcome . '&slideshow_method=hidemessage&message=submitserial') . '">' . __('continue using Slideshow Gallery LITE', $this -> plugin_name) . '</a>');
+						$message .= ' <a class="button button-primary" id="' . $this -> pre . 'submitseriallink" href="' . admin_url('admin.php') . '?page=' . $this -> sections -> submitserial . '"><i class="fa fa-key"></i> ' . __('Submit Serial Key', $this -> plugin_name) . '</a>';
+						$message .= ' <a class="button button-secondary" href="' . admin_url('admin.php?page=' . $this -> sections -> lite_upgrade) . '"><i class="fa fa-check"></i> ' . __('Upgrade to PRO', $this -> plugin_name) . '</a>';
+						$dismissable = admin_url('admin.php?page=' . $this -> sections -> welcome . '&slideshow_method=hidemessage&message=submitserial');
+						$this -> render_msg($message, $dismissable, false);
+						
+						?>
+			            
+			            <script type="text/javascript">
+						jQuery(document).ready(function(e) {
+			                jQuery('#<?php echo $this -> pre; ?>submitseriallink').click(function() {					
+								jQuery.colorbox({href:ajaxurl + "?action=slideshow_serialkey"});
+								return false;
+							});
+			            });
+						</script>
+			            
+			            <?php
+			        }
+				}
+				
+				/* Check if wp_head and wp_footer functions exist */
+				$url = add_query_arg(array('test-head' => 1, 'test-footer' => 1), home_url());
+				if ($response = wp_remote_request($url)) {
+					if (!is_wp_error($response)) {
+						$html = $response['body'];
+						$showmessage_wphead = $this -> get_option('showmessage_wphead');
+						$showmessage_wpfoot = $this -> get_option('showmessage_wpfoot');
+						
+						if (!strstr($html, '<!-- wp_head -->')) {
+							if (empty($showmessage_wphead) || (!empty($showmessage_wphead) && $showmessage_wphead != "hidden")) {
+								$this -> update_option('showmessage_wphead', 1);
+								$dismissable = admin_url('admin.php?page=' . $this -> sections -> settings . '&slideshow_method=hidemessage&message=wphead');
+								$this -> render_err(sprintf(__('Slideshow Gallery: It seems like your theme is missing the wp_head() function.', $this -> plugin_name)), $dismissable);
+							}
+						}
+						
+						if (!strstr($html, '<!-- wp_footer -->')) {
+							if (empty($showmessage_wpfoot) || (!empty($showmessage_wpfoot) && $showmessage_wpfoot != "hidden")) {
+								$this -> update_option('showmessage_wpfoot', 1);
+								$dismissable = admin_url('admin.php?page=' . $this -> sections -> settings . '&slideshow_method=hidemessage&message=wpfoot');
+								$this -> render_err(sprintf(__('Slideshow Gallery: It seems like your theme is missing the wp_footer() function.', $this -> plugin_name)), $dismissable);
+							}
 						}
 					}
-					
-					if (!strstr($html, '<!-- wp_footer -->')) {
-						if (empty($showmessage_wpfoot) || (!empty($showmessage_wpfoot) && $showmessage_wpfoot != "hidden")) {
-							$this -> update_option('showmessage_wpfoot', 1);
-							$this -> render_err(sprintf(__('Slideshow Gallery: It seems like your theme is missing the wp_footer() function. See %s . %s', $this -> plugin_name), '<a href="http://codex.wordpress.org/Function_Reference/wp_footer" target="_blank">' . __('documentation', $this -> plugin_name) . '</a>', '<a href="' . admin_url('admin.php?page=' . $this -> sections -> settings . '&slideshow_method=hidemessage&message=wpfoot') . '" class="slideshow-icon-delete"></a>'));
-						}
-					}
-				} else {
-					$error_string = $response -> get_error_message();
-					$this -> render_err($error_string);
 				}
 			}
 			
@@ -303,6 +355,7 @@ if (!class_exists('Gallery')) {
 			// if this is an RSS/Atom feed, it should not continue...
 			if (is_feed()) { return false; }
 			
+			// Shopping Cart plugin products
 			if (!empty($products)) {
 				include_once(ABSPATH . 'wp-admin/includes/plugin.php');			
 				if (is_plugin_active('wp-checkout' . DS . 'wp-checkout.php')) {
@@ -336,6 +389,7 @@ if (!class_exists('Gallery')) {
 					$content .= stripslashes($error);
 					$content .= '</p>';
 				}
+			// Featured images
 			} elseif (!empty($featured)) {
 				global $post;
 			
@@ -358,6 +412,7 @@ if (!class_exists('Gallery')) {
 					$content .= stripslashes($error);
 					$content .= '</p>';
 				}
+			// Slides of a gallery
 			} elseif (!empty($gallery_id)) {
 				if (!is_array($orderby) || $orderby == "random") {
 					$orderbystring = "ORDER BY RAND()";
@@ -391,8 +446,9 @@ if (!class_exists('Gallery')) {
 					}
 				
 					if ($orderby == "random") { shuffle($slides); }
-					$content = $this -> render('gallery', array('slides' => $slides, 'unique' => 'gallery' . $gallery_id, 'options' => $s, 'frompost' => false), false, 'default');	
+					$content = $this -> render('gallery', array('slides' => $slides, 'unique' => 'gallery' . $gallery_id . rand(1, 999), 'options' => $s, 'frompost' => false), false, 'default');	
 				}
+			// All slides
 			} elseif (!empty($custom) || empty($post_id)) {
 				$slides = $this -> Slide -> find_all(null, null, $orderby);
 				
@@ -408,6 +464,7 @@ if (!class_exists('Gallery')) {
 				
 				if ($orderby == "random") { shuffle($slides); }
 				$content = $this -> render('gallery', array('slides' => $slides, 'unique' => "custom", 'options' => $s, 'frompost' => false), false, 'default');
+			// Images of a post/page
 			} else {
 				global $post;
 				$pid = (empty($post_id)) ? $post -> ID : $post_id;
@@ -467,8 +524,11 @@ if (!class_exists('Gallery')) {
 					
 					$this -> redirect($this -> referer, $msg_type, $message);
 					break;
-				case 'save'				:
+				case 'save'				:				
 					if (!empty($_POST)) {
+						
+						check_admin_referer('slideshow-slides-save_' . $_POST['Slide']['id']);
+						
 						if ($this -> Slide -> save($_POST, true)) {
 							$message = __('Slide has been saved', $this -> plugin_name);
 							
@@ -489,6 +549,9 @@ if (!class_exists('Gallery')) {
 					break;
 				case 'save-multiple'	:
 					if (!empty($_POST)) {
+						
+						check_admin_referer($this -> sections -> slides . '-save-multiple');
+						
 						$errors = array();
 						
 						if (!empty($_POST['Slide']['slides'])) {
@@ -507,8 +570,8 @@ if (!class_exists('Gallery')) {
 									'galleries'			=>	$galleries,
 								);
 								
-								if (!$this -> Slide -> save($slide_data)) {
-									$errors = array_merge($errors, $this -> Slide -> errors);	
+								if (!$this -> Slide -> save($slide_data)) {									
+									$errors = array_merge($errors, $this -> Slide -> errors);
 								}
 							}
 							
@@ -524,6 +587,9 @@ if (!class_exists('Gallery')) {
 					$this -> render('slides' . DS . 'save-multiple', array('errors' => $errors), true, 'admin');
 					break;
 				case 'mass'				:
+				
+					check_admin_referer($this -> sections -> slides . '-bulkaction');
+				
 					if (!empty($_POST['action'])) {
 						if (!empty($_POST['Slide']['checklist'])) {						
 							switch ($_POST['action']) {
@@ -587,6 +653,9 @@ if (!class_exists('Gallery')) {
 			switch ($_GET['method']) {
 				case 'save'						:
 					if (!empty($_POST)) {
+						
+						check_admin_referer('slideshow-galleries-save_' . $_POST['Gallery']['id']);
+						
 						if ($this -> Gallery -> save($_POST, true)) {
 							$message = __('Gallery has been saved', $this -> plugin_name);
 							
@@ -607,7 +676,7 @@ if (!class_exists('Gallery')) {
 				case 'view'						:
 					$this -> Db -> model = $this -> Gallery -> model;
 					$gallery = $this -> Gallery -> find(array('id' => $_GET['id']));
-					$data = $this -> paginate('GallerySlides', "*", false, array('gallery_id' => $gallery -> id));
+					$data = $this -> paginate('GallerySlides', "*", $this -> sections -> galleries . '&method=view&id=' . $gallery -> id, array('gallery_id' => $gallery -> id));
 					
 					$data['Slide'] = array();
 					if (!empty($data[$this -> GallerySlides -> model])) {
@@ -641,6 +710,9 @@ if (!class_exists('Gallery')) {
 					$this -> redirect($this -> referer, $msg_type, $message);
 					break;
 				case 'mass'				:
+				
+					check_admin_referer($this -> sections -> galleries . '-bulkaction');
+				
 					if (!empty($_POST['action'])) {
 						if (!empty($_POST['Gallery']['checklist'])) {						
 							switch ($_POST['action']) {
@@ -716,6 +788,9 @@ if (!class_exists('Gallery')) {
 					break;
 				default					:
 					if (!empty($_POST)) {
+						
+						check_admin_referer($this -> sections -> settings);
+						
 						delete_option('tridebugging');
 						$this -> delete_option('infohideonmobile');
 						$this -> delete_option('autoheight');
@@ -779,6 +854,9 @@ if (!class_exists('Gallery')) {
 					case 'hidemessage'					:
 						if (!empty($_GET['message'])) {
 							switch ($_GET['message']) {
+								case 'submitserial'				:
+									$this -> update_option('hidemessage_submitserial', true);
+									break;
 								case 'ratereview'				:
 									$this -> delete_option('showmessage_ratereview');
 									$this -> redirect($this -> referer);

@@ -1,10 +1,19 @@
 .banner_wrapper .banner {
 	background-size: cover;
 	border: 1px solid black;
+	box-sizing: content-box;
 	height: 300px;
 	position: relative;
 	max-height: 100%;
 	max-width: 100%;
+}
+
+.rotatingBannerWidget .banner_wrapper .banner {
+	border: none;
+}
+
+.rotatingBannerWidget .cycle-slideshow {
+	border: 1px solid black;
 }
 
 .banner_wrapper .banner .custom_banners_big_link{
@@ -13,6 +22,13 @@
 	right:0;
 	bottom:0;
 	left:0;
+	z-index: 999; /* set high to go over caption */
+}
+
+/* Make Youtube Videos Clickable, even when Entire banner is clickable */
+.banner_caption iframe {
+    position: relative;
+    z-index: 9999;
 }
 
 .banner_wrapper .banner .banner_caption {
@@ -22,7 +38,7 @@
 	position: absolute;
 	left: 0;
 	right: 0;
-}			
+}		
 
 .banner_wrapper .banner.bottom .banner_caption {
 	bottom: 0;
@@ -98,7 +114,7 @@
 /* Cycle */
 .cycle-slideshow {
     overflow: hidden;
-    padding-bottom: 40px;
+    margin-bottom: 40px;
 }
 
 /* pager */

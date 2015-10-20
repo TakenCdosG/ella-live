@@ -1,4 +1,6 @@
 <?php
+	
+if (!defined('ABSPATH')) exit; // Exit if accessed directly
 
 class GallerySlide extends GalleryDbHelper {
 
@@ -173,10 +175,22 @@ class GallerySlide extends GalleryDbHelper {
 						$filepath = GalleryHtmlHelper::uploads_path() . DS . $this -> plugin_name . DS;
 						$filefull = $filepath . $filename;
 						
-						if (!file_exists($filefull)) {
-							$fh = @fopen($filefull, "w");
-							@fwrite($fh, $image);
-							@fclose($fh);
+						$issafe = false;
+						$mimes = get_allowed_mime_types();						
+						foreach ($mimes as $type => $mime) {
+							if (strpos($type, $image_ext) !== false) {
+								$issafe = true;
+							}
+						}
+						
+						if (empty($issafe) || $issafe == false) {
+							$this -> errors['image_url'] = __('This file type is not allowed for security reasons', $this -> plugin_name);
+						} else {
+							if (!file_exists($filefull)) {
+								$fh = @fopen($filefull, "w");
+								fwrite($fh, $image);
+								fclose($fh);
+							}	
 						}
 					}
 				}
@@ -185,8 +199,10 @@ class GallerySlide extends GalleryDbHelper {
 			$this -> errors[] = __('No data was posted', $this -> plugin_name);
 		}
 		
-		return $this -> errors;
+		return apply_filters('slideshow_slide_validation', $this -> errors, $data);
 	}
 }
+
+include_once(dirname(__FILE__) . DS . 'slideshow.php');
 
 ?>

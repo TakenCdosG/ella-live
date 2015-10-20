@@ -1,8 +1,21 @@
 <?php
+	
+if (!defined('ABSPATH')) exit; // Exit if accessed directly
 
 class GalleryDbHelper extends GalleryPlugin {
 
 	var $name = 'Db';
+	
+	function count($conditions = array()) {
+		global $wpdb;
+		
+		$query = "SELECT COUNT(*) FROM `" . $this -> table . "`";
+		if ($count = $wpdb -> get_var($query)) {
+			return $count;
+		}
+		
+		return false;
+	}
 	
 	function find($conditions = array(), $fields = false, $order = array('id', "DESC"), $assign = true, $atts = array()) {
 		global $wpdb;
@@ -35,7 +48,7 @@ class GalleryDbHelper extends GalleryPlugin {
 			$c = 1;
 			
 			foreach ($conditions as $ckey => $cval) {
-				$query .= " `" . $ckey . "` = '" . $cval . "'";
+				$query .= " `" . $ckey . "` = '" . ($cval) . "'";
 				
 				if ($c < count($conditions)) {
 					$query .= " AND";
@@ -50,7 +63,7 @@ class GalleryDbHelper extends GalleryPlugin {
 		} else {
 			$order = (empty($order)) ? array('id', "DESC") : $order;
 			list($ofield, $odir) = $order;
-			$query .= " ORDER BY `" . $ofield . "` " . $odir . "";
+			$query .= " ORDER BY `" . $ofield . "` " . ($odir) . "";
 		}
 			
 		$query .= " LIMIT 1";
@@ -90,7 +103,7 @@ class GalleryDbHelper extends GalleryPlugin {
 			$c = 1;
 			
 			foreach ($conditions as $ckey => $cval) {
-				$query .= " `" . $ckey . "` = '" . $cval . "'";
+				$query .= " `" . $ckey . "` = '" . ($cval) . "'";
 				
 				if ($c < count($conditions)) {
 					$query .= " AND";
@@ -107,7 +120,7 @@ class GalleryDbHelper extends GalleryPlugin {
 		} else {
 			if (!is_array($order)) { $order = array('id', "DESC"); }
 			list($ofield, $odir) = $order;
-			$query .= " ORDER BY `" . $ofield . "` " . $odir . "";
+			$query .= " ORDER BY `" . $ofield . "` " . ($odir) . "";
 		}
 			
 		$query .= (empty($limit)) ? '' : " LIMIT " . $limit . "";
@@ -150,20 +163,25 @@ class GalleryDbHelper extends GalleryPlugin {
 		switch ($this -> model) {
 			case 'Slide'				:
 				if ($this -> language_do()) {
-					$this -> data -> title = qtrans_join($this -> data -> title);
-					$this -> data -> description = qtrans_join($this -> data -> description);
+					$this -> data -> title = $this -> language_join($this -> data -> title);
+					$this -> data -> description = $this -> language_join($this -> data -> description);
+					$this -> data -> link = $this -> language_join($this -> data -> link);
 				}
 				break;
 			case 'Gallery'				:
 				if ($this -> language_do()) {
-					$this -> data -> title = qtrans_join($this -> data -> title);
+					$this -> data -> title = $this -> language_join($this -> data -> title);
 				}
 				break;
 		}
 		
 		if ($validate == true) {
 			if (method_exists($this, 'validate')) {
-				$this -> validate((array) $this -> data);
+				$errors = $this -> validate((array) $this -> data);
+				
+				if (!empty($errors)) {
+					$this -> errors = array_merge($this -> errors, $errors);
+				}
 			}
 		}
 		
@@ -216,14 +234,14 @@ class GalleryDbHelper extends GalleryPlugin {
 			global $wpdb;
 			
 			if (!empty($field)) {
-				$query = "UPDATE `" . $this -> table . "` SET `" . $field . "` = '" . $value . "'";
+				$query = "UPDATE `" . $this -> table . "` SET `" . $field . "` = '" . ($value) . "'";
 				
 				if (!empty($conditions) && is_array($conditions)) {
 					$query .= " WHERE";
 					$c = 1;
 					
 					foreach ($conditions as $ckey => $cval) {
-						$query .= " `" . $ckey . "` = '" . $cval . "'";
+						$query .= " `" . $ckey . "` = '" . ($cval) . "'";
 						
 						if ($c < count($conditions)) {
 							$query .= " AND";
@@ -246,7 +264,7 @@ class GalleryDbHelper extends GalleryPlugin {
 		global $wpdb;
 		
 		if (!empty($record_id) && $record = $this -> find(array('id' => $record_id))) {
-			$query = "DELETE FROM `" . $this -> table . "` WHERE `id` = '" . $record_id . "' LIMIT 1";
+			$query = "DELETE FROM `" . $this -> table . "` WHERE `id` = '" . ($record_id) . "' LIMIT 1";
 			
 			if ($wpdb -> query($query)) {			
 				switch ($this -> model) {
@@ -285,11 +303,11 @@ class GalleryDbHelper extends GalleryPlugin {
 							if (is_array($this -> data -> {$field}) || is_object($this -> data -> {$field})) {
 								$value = serialize($this -> data -> {$field});
 							} else {
-								$value = esc_sql($this -> data -> {$field});
+								$value = ($this -> data -> {$field});
 							}
 				
 							$query1 .= "`" . $field . "`";
-							$query2 .= "'" . $value . "'";
+							$query2 .= "'" . ($value) . "'";
 							
 							if ($c < count($this -> fields)) {
 								$query1 .= ", ";
@@ -331,10 +349,10 @@ class GalleryDbHelper extends GalleryPlugin {
 					if (is_array($this -> data -> {$field}) || is_object($this -> data -> {$field})) {
 						$value = serialize($this -> data -> {$field});
 					} else {
-						$value = esc_sql($this -> data -> {$field});
+						$value = ($this -> data -> {$field});
 					}
 				
-					$query .= "`" . $field . "` = '" . $value . "'";
+					$query .= "`" . $field . "` = '" . ($value) . "'";
 					
 					if ($c < count($this -> fields)) {
 						$query .= ", ";

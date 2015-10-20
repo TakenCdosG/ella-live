@@ -4,7 +4,7 @@ Plugin Name: Custom Banners
 Plugin Script: custom-banners.php
 Plugin URI: http://goldplugins.com/our-plugins/custom-banners/
 Description: Allows you to create custom banners, which consist of an image, text, a link, and a call to action.  Custom banners are easily output via shortcodes. Each visitor to the website is then shown a random custom banner.
-Version: 1.5.1
+Version: 1.7.2
 Author: GoldPlugins
 Author URI: http://goldplugins.com/
 
@@ -14,11 +14,18 @@ require_once('gold-framework/plugin-base.php');
 require_once('lib/lib.php');
 require_once('lib/custom_banners_options.php');
 require_once('lib/BikeShed/bikeshed.php');
+require_once('lib/cbp_expiration_date.class.php');
 
-class CustomBannersPlugin extends GoldPlugin
+class CustomBannersPlugin extends CBP_GoldPlugin
 {
+	var $transitions = array('fade','fadeIn','fadeOut','scrollHorz','scrollVert','shuffle','carousel','flipHorz','flipVert','tileSlide');
+	var $free_transitions = array('fade','scrollHorz');
+	
 	function __construct()
 	{
+		// create subclasses
+		$this->ExpirationDate = new CBP_ExpirationDate($this, __FILE__);
+		
 		$this->add_hooks();
 		$this->create_post_types();
 		$this->register_taxonomies();
@@ -46,6 +53,7 @@ class CustomBannersPlugin extends GoldPlugin
 		
 		//add single shortcode metabox to banner add/edit screen
 		add_action( 'admin_menu', array($this,'add_meta_boxes')); // add our custom meta boxes
+		add_action( 'admin_menu', array($this,'add_settings_link')); // add a link to the settings page under the banners menu
 		
 		parent::__construct();
 	}
@@ -58,8 +66,10 @@ class CustomBannersPlugin extends GoldPlugin
 	
 	function add_hooks()
 	{
+		global $post;
+		
 		// add Google web fonts if needed
-		add_action( 'wp_enqueue_scripts', array($this, 'enqueue_webfonts'));
+		add_action( 'wp_enqueue_scripts', array($this, 'enqueue_webfonts') );
 		
 		parent::add_hooks();
 	}
@@ -202,53 +212,103 @@ class CustomBannersPlugin extends GoldPlugin
 							'show_pager_icons' => false,
 							'hide' => false,
 							'width' => get_option('custom_banners_default_width', ''),
-							'height' => get_option('custom_banners_default_height', '')
-							);
-							
+							'height' => get_option('custom_banners_default_height', ''),
+							'pause_on_hover' => false,
+							'auto_height' => false,
+							'prev_next' => false,
+							'paused' => false,
+							'banner_height' => '',
+							'banner_height_px' =>get_option('custom_banners_default_height', ''),
+							'banner_width' => '',
+							'banner_width_px' =>  get_option('custom_banners_default_width', ''),
+							'link_entire_banner' => get_option('custom_banners_use_big_link', 0),
+							'open_link_in_new_window' => get_option('custom_banners_open_link_in_new_window', 0),
+							'show_caption' => !get_option('custom_banners_never_show_captions', 1),
+							'show_cta_button' => !get_option('custom_banners_never_show_cta_buttons', 1)
+						);
+
 		$atts = shortcode_atts($defaults, $atts);
 		$banner_id = intval($atts['id']);
 		
 		$html = '';
 		
-		// load the banner's data
-		if($banner_id == ''){
-			$banners = get_posts(array('posts_per_page' => $atts['count'], 'orderby' => 'rand', 'post_type'=> 'banner', 'banner_groups' => $atts['group']));
-		
-			if(isValidCBKey() && (in_array($atts['transition'], array('fadeIn','fadeOut','scrollHorz','scrollVert','shuffle','carousel','flipHorz','flipVert','tileSlide')))){
-				$html .= '<div class="cycle-slideshow" data-cycle-fx="' . $atts['transition'] . '" data-cycle-timeout="' . $atts['timer'] . '" data-cycle-slides="> div.banner_wrapper" >';
+		// Generate the HTML for the requested banners (could be a single banner, or many)
+		if( $banner_id > 0 ) {
+			// A single banner ID was specified, so just load it directly
+			$banner = $this->get_banner_by_id($banner_id);
+			if ($banner !== false) {
+				$html .= $this->buildBannerHTML($banner, $banner_id, $atts);
+			}
+		}
+		else {
+			// choose a banner based on the other attributes 	
+			$banners = $this->get_banners_by_atts($atts);
+			$slideshow = ( (in_array($atts['transition'], $this->transitions)) );
+			if ( !isValidCBKey() && $slideshow && strlen($atts['transition']) > 0 ) {
+				if ( !(in_array($atts['transition'], $this->free_transitions)) ) {					
+					$atts['transition'] = 'fade';
+				}
+			}
+
+			// start the slideshow's HTML (if required)
+			if( $slideshow ) {
+				$html .= '<div class="cycle-slideshow" data-cycle-fx="' . $atts['transition'] . '" data-cycle-timeout="' . $atts['timer'] . '" data-cycle-pause-on-hover="' . $atts['pause_on_hover'] . '" data-cycle-slides="> div.banner_wrapper" >';				
 			}
 		
-			$first = true;
-		
-			foreach($banners as $banner){
+			// build the HTML for each banner, concatenating its output to $html
+			foreach($banners as $index => $banner) {
+				// If we are outputting a slideshow, hide all but the first banner
+				$atts['hide'] = ( $slideshow && ($index > 0) );
 				
-				//hide all but the first banner
-				if($first){
-					$atts['hide'] = false;
-					$first = false;
-				} else {
-					$atts['hide'] = true;
-				}
-				
+				// Add this banner's HTML to the output
 				$html .= $this->buildBannerHTML($banner, $banner_id, $atts);
 			}
 			
-			if(isValidCBKey() && (in_array($atts['transition'], array('fadeIn','fadeOut','scrollHorz','scrollVert','shuffle','carousel','flipHorz','flipVert','tileSlide')))){
-				//add pager to bottom of slideshow, if option set
+			// add a pager and close the slideshow's HTML (if requested)
+			if( $slideshow ){
 				if($atts['pager'] || $atts['show_pager_icons'] ){
 					$html .= '<div class="cycle-pager"></div>';
-				}
-				
+				}				
 				$html .= '</div><!-- end slideshow -->';
 			}
-		} else {
-			$banner = get_post($banner_id);
-			
-			$html .= $this->buildBannerHTML($banner, $banner_id, $atts);
 		}
 		
 		// return the generated HTML
 		return $html;
+	}
+	
+	function get_banner_by_id($id, $respect_expiration = true)
+	{
+		$args = array(
+			'posts_per_page' => 1,
+			'p' => $id,
+			'post_type'=> 'banner',
+		);
+
+		/* Restrict by expiration date (optional) */
+		if ($respect_expiration) {
+			$args['meta_query'] = $this->ExpirationDate->get_meta_query();
+		}
+
+		$banners_query = new WP_Query( $args );
+		$banner = !empty($banners_query->posts) ? $banners_query->posts[0] : false;
+		return $banner;
+	}
+	
+	function get_banners_by_atts($atts)
+	{
+		$args = array(
+			'posts_per_page' => $atts['count'],
+			'orderby' => 'rand',
+			'post_type'=> 'banner',
+			'banner_groups' => $atts['group'],
+			'nopaging' => ($atts['count'] == '-1'), // turn paging off posts_per_page is unlimited
+			'meta_query' => $this->ExpirationDate->get_meta_query()
+		);
+
+		$banners_query = new WP_Query( $args );
+		$banners = !empty($banners_query->posts) ? $banners_query->posts : array();
+		return $banners;
 	}
 	
 	function buildBannerHTML($banner, $banner_id, $atts){
@@ -256,20 +316,24 @@ class CustomBannersPlugin extends GoldPlugin
 			$banner_id = $banner->ID;		
 		}
 	
-		$post_thumbnail_id = get_post_thumbnail_id( $banner_id );
-		$cta = $this->get_option_value($banner_id, 'cta_text', '');
-		$target_url = $this->get_option_value($banner_id, 'target_url', '#');
-		$css_class = $this->get_option_value($banner_id, 'css_class', '');	
-		$use_big_link = get_option('custom_banners_use_big_link');
-		$open_in_window = get_option('custom_banners_open_link_in_new_window', 0);
-		$show_captions = !get_option('custom_banners_never_show_captions', 0);
-		$show_cta_buttons = !get_option('custom_banners_never_show_cta_buttons', 0);
+		$post_thumbnail_id 	= get_post_thumbnail_id( $banner_id );
+		$cta 				= $this->get_option_value($banner_id, 'cta_text', '');
+		$target_url 		= $this->get_option_value($banner_id, 'target_url', '#');
+		$css_class 			= $this->get_option_value($banner_id, 'css_class', '');	
+		$use_big_link 		= isset($atts['link_entire_banner']) ? $atts['link_entire_banner'] : get_option('custom_banners_use_big_link');
+		$open_in_window 	= isset($atts['open_link_in_new_window']) ? $atts['open_link_in_new_window'] : get_option('custom_banners_open_link_in_new_window');
+		$show_captions 		= isset($atts['show_caption']) ? $atts['show_caption'] : !get_option('custom_banners_never_show_captions', 0);
+		$show_cta_buttons 	= isset($atts['show_cta_button']) ? ($atts['show_cta_button'] == 1) : !get_option('custom_banners_never_show_cta_buttons', 0);
+		$banner_width  		= isset($atts['banner_width']) ? $atts['banner_width'] : 'auto';
+		$banner_width_px  	= !empty($atts['banner_width_px']) && intval($atts['banner_width_px']) > 0 ? intval($atts['banner_width_px']) : '';
+		$banner_height  	= isset($atts['banner_height']) ? $atts['banner_height'] : 'auto';
+		$banner_height_px  	= !empty($atts['banner_height_px']) && intval($atts['banner_height_px']) > 0 ? intval($atts['banner_height_px']) : '';
 		
 		// placeholder variables
 		$html = '';
 		$img_html = '';
 		$banner_style = '';
-		
+
 		// add any extra CSS classes to the banner
 		$extra_classes = array($css_class, 'banner-' . $banner_id);
 		if (strlen($cta) > 0) {
@@ -306,7 +370,30 @@ class CustomBannersPlugin extends GoldPlugin
 				$img_html = '';
 			}
 			else {
-				$img_html = wp_get_attachment_image($post_thumbnail_id, 'full');
+				$img_style = '';
+				
+				if ($banner_width == 'specify') {
+					$img_style .= sprintf('width: %spx;', $banner_width_px);
+				}
+				
+				if ($banner_height == 'specify') {
+					$img_style .= sprintf('height: %spx;', $banner_height_px);
+				}	
+
+				if (strlen($img_style) > 0) {
+					$img_atts = array('style' => $img_style);
+				} else {
+					$img_atts = array();
+				}
+				
+				if ($banner_width == 'specify' && $banner_height == 'specify') {
+					$size = array($banner_width_px, $banner_height_px);
+				}
+				else {
+					$size = 'fullsize';
+				}
+				
+				$img_html = wp_get_attachment_image($post_thumbnail_id, 'full', $size, $img_atts);
 			}			
 		}		
 		
@@ -365,20 +452,14 @@ class CustomBannersPlugin extends GoldPlugin
 		$cssUrl = plugins_url( 'assets/css/wp-banners.css' , __FILE__ );
 		$this->add_stylesheet('wp-banners-css',  $cssUrl);
 		
-		if(isValidCBKey()){  
-			//need to include cycle2 this way, for compatibility with our other plugins
-			$jsUrl = plugins_url( 'assets/js/jquery.cycle2.min.js' , __FILE__ );
-			$this->add_script('cycle2',  $jsUrl, array( 'jquery' ),
-			false,
-			true);		
-			
-			$jsUrl = plugins_url( 'assets/js/wp-banners.js' , __FILE__ );
-			$this->add_script('wp-banners-js',  $jsUrl, array( 'jquery' ),
-			false,
-			true);			
-		}
+		//need to include cycle2 this way, for compatibility with our other plugins
+		$jsUrl = plugins_url( 'assets/js/jquery.cycle2.min.js' , __FILE__ );
+		$this->add_script('cycle2',  $jsUrl, array( 'jquery' ),	false, true);
+		
+		$jsUrl = plugins_url( 'assets/js/wp-banners.js' , __FILE__ );
+		$this->add_script('wp-banners-js',  $jsUrl, array( 'jquery' ), false, true);
 	}
- 
+	
 	//this is the heading of the new column we're adding to the banner posts list
 	function custom_banners_column_head($defaults) {  
 		$defaults = array_slice($defaults, 0, 2, true) +
@@ -420,7 +501,7 @@ class CustomBannersPlugin extends GoldPlugin
 	}
 	
 	//add an inline link to the settings page, before the "deactivate" link
-	function add_settings_link_to_plugin_action_links($links) { 
+	function add_settings_link_to_plugin_action_links($links) {
 	  $settings_link = '<a href="admin.php?page=custom-banners-settings">Settings</a>';
 	  array_unshift($links, $settings_link); 
 	  return $links; 
@@ -468,36 +549,67 @@ class CustomBannersPlugin extends GoldPlugin
 	 * @returns	string		The completed CSS string, with the values inlined
 	 */
 	function build_banner_css($atts)
-	{
+	{	
+		$option_use_image_tag = isset($atts['use_image_tag']) ? $atts['use_image_tag'] : false;
+		
 		$defaults = array(
 						'width' => get_option('custom_banners_default_width', ''),
 						'height' => get_option('custom_banners_default_height', ''),
+						'banner_width' 		=> 'auto',
+						'banner_width_px' 	=> '',
+						'banner_height' 	=> 'auto',
+						'banner_height_px' 	=> '',
 					);
 		$atts = shortcode_atts($defaults, $atts);
 		
+		$banner_width  		= isset($atts['banner_width']) ? $atts['banner_width'] : 'auto';
+		$banner_width_px  	= !empty($atts['banner_width_px']) && intval($atts['banner_width_px']) > 0 ? intval($atts['banner_width_px']) : '';
+		$banner_height  	= isset($atts['banner_height']) ? $atts['banner_height'] : 'auto';
+		$banner_height_px  	= !empty($atts['banner_height_px']) && intval($atts['banner_height_px']) > 0 ? intval($atts['banner_height_px']) : '';
+		
+		if ($banner_width == 'specify') {
+			$atts['width'] = $banner_width_px;
+		}
+		
+		if ($banner_height == 'specify') {
+			$atts['height'] = $banner_height_px;
+		}						
+		
 		$css_rule_template = ' %s: %s;';
 		$output = '';
-
+		
 		/* 
 		 * Width
 		 */
 		$option_val = $atts['width'];		
-		if (!empty($option_val)) {
-			if ( is_numeric($option_val) ) {
-				$option_val .= 'px';
+		if (!empty($option_val) || $banner_width == '100_percent' || $banner_width == 'auto') {
+			if ($banner_width == 'auto' && $option_use_image_tag) {
+				$option_val = 'auto';
+				$output .= sprintf($css_rule_template, 'width', $option_val);
 			}
-			$output .= sprintf($css_rule_template, 'width', $option_val);
-		}		
+			else if ($banner_width == '100_percent') {
+				$option_val = '100%';
+				$output .= sprintf($css_rule_template, 'width', $option_val);
+			}
+			else if ( is_numeric($option_val) ) {
+				$option_val .= 'px';
+				$output .= sprintf($css_rule_template, 'width', $option_val);
+			}
+		}
 		
 		/* 
 		 * Height
 		 */
-		$option_val = $atts['height'];		
-		if (!empty($option_val)) {
-			if ( is_numeric($option_val) ) {
-				$option_val .= 'px';
+		$option_val = $atts['height'];
+		if (!empty($option_val) || $banner_height == 'auto') {
+			if ($banner_height == 'auto' && $option_use_image_tag) {
+				$option_val = 'auto';
+				$output .= sprintf($css_rule_template, 'height', $option_val);
 			}
-			$output .= sprintf($css_rule_template, 'height', $option_val);
+			else if ( is_numeric($option_val) ) {
+				$option_val .= 'px';
+				$output .= sprintf($css_rule_template, 'height', $option_val);
+			}			
 		}		
 		
 		// return the completed CSS string
@@ -514,10 +626,27 @@ class CustomBannersPlugin extends GoldPlugin
 	function build_banner_wrapper_css($atts)
 	{
 		$defaults = array(
-						'width' => get_option('custom_banners_default_width', ''),
-						'height' => get_option('custom_banners_default_height', ''),
+						'width' 			=> get_option('custom_banners_default_width', ''),
+						'height'			=> get_option('custom_banners_default_height', ''),
+						'banner_width' 		=> '',
+						'banner_width_px' 	=> '',
+						'banner_height' 	=> '',
+						'banner_height_px' 	=> '',
 					);
 		$atts = shortcode_atts($defaults, $atts);
+		$banner_width  		= isset($atts['banner_width']) ? $atts['banner_width'] : '';
+		$banner_width_px  	= !empty($atts['banner_width_px']) && intval($atts['banner_width_px']) > 0 ? intval($atts['banner_width_px']) : '';
+		$banner_height  	= isset($atts['banner_height']) ? $atts['banner_height'] : '';
+		$banner_height_px  	= !empty($atts['banner_height_px']) && intval($atts['banner_height_px']) > 0 ? intval($atts['banner_height_px']) : '';
+		
+		if ($banner_width == 'specify') {
+			$atts['width'] = $banner_width_px;
+		}
+		
+		if ($banner_height == 'specify') {
+			$atts['height'] = $banner_height_px;
+		}		
+				
 		
 		$css_rule_template = ' %s: %s;';
 		$output = '';
@@ -525,24 +654,34 @@ class CustomBannersPlugin extends GoldPlugin
 		/* 
 		 * Width
 		 */
-		$option_val = $atts['width'];		
-		if (!empty($option_val)) {
-			if ( is_numeric($option_val) ) {
-				$option_val .= 'px';
+		if ($banner_width != 'auto')
+		{
+			$option_val = $atts['width'];		
+			if (!empty($option_val) || $banner_width=='100_percent') {
+				if ($banner_width == '100_percent') {
+					$option_val = '100%';
+					$output .= sprintf($css_rule_template, 'width', $option_val);
+				}
+				else if ( is_numeric($option_val) ) {
+					$option_val .= 'px';
+					$output .= sprintf($css_rule_template, 'width', $option_val);
+				}
 			}
-			$output .= sprintf($css_rule_template, 'width', $option_val);
-		}		
+		}
 		
 		/* 
 		 * Height
 		 */
-		$option_val = $atts['height'];		
-		if (!empty($option_val)) {
-			if ( is_numeric($option_val) ) {
-				$option_val .= 'px';
-			}
-			$output .= sprintf($css_rule_template, 'height', $option_val);
-		}		
+		if ($banner_height != 'auto')
+		{
+			$option_val = $atts['height'];		
+			if (!empty($option_val)) {
+				if ( is_numeric($option_val) ) {
+					$option_val .= 'px';
+					$output .= sprintf($css_rule_template, 'height', $option_val);
+				}
+			}		
+		}
 		
 		// return the completed CSS string
 		return trim($output);
@@ -772,13 +911,24 @@ class CustomBannersPlugin extends GoldPlugin
 	// Enqueue any needed Google Web Fonts
 	function enqueue_webfonts()
 	{
-		$font_list = $this->list_required_google_fonts();
-		$font_list_encoded = array_map('urlencode', $this->list_required_google_fonts());
-		$font_str = implode('|', $font_list_encoded);
-		
+		$cache_key = '_custom_bs_webfont_str';
+		$font_str = get_transient($cache_key);
+		if ($font_str == false) {
+			$font_list = $this->list_required_google_fonts();
+			if ( !empty($font_list) ) {
+				$font_list_encoded = array_map('urlencode', $font_list);
+				$font_str = implode('|', $font_list_encoded);
+			} else {
+				$font_str = 'x';
+			}
+			set_transient($cache_key, $font_str);					
+		}
+
 		//don't register this unless a font is set to register
-		if(strlen($font_str)>2){
-			wp_register_style( 'custom_banners_webfonts', 'http://fonts.googleapis.com/css?family=' . $font_str);
+		if(strlen($font_str)>2) {
+			$protocol = is_ssl() ? 'https:' : 'http:';
+			$font_url = $protocol . '//fonts.googleapis.com/css?family=' . $font_str;
+			wp_register_style( 'custom_banners_webfonts', $font_url );
 			wp_enqueue_style( 'custom_banners_webfonts' );
 		}
 	}
@@ -787,6 +937,7 @@ class CustomBannersPlugin extends GoldPlugin
 	{
 		// check each typography setting for google fonts, and build a list
 		$option_keys = array(
+			'custom_banners_caption_font_family',
 			'custom_banners_cta_button_font_family',
 		);
 		$fonts = array();
@@ -800,9 +951,19 @@ class CustomBannersPlugin extends GoldPlugin
 			}
 		}
 		return $fonts;
-	}	
-
+	}
 	
+	function add_settings_link()
+	{
+		$hook_suffix = add_submenu_page( 'edit.php?post_type=banner', 'Settings', 'Settings', 'administrator', 'custom-banners-settings-redirect', array($this, 'settings_link_redirect') ); 
+		add_action("load-$hook_suffix", array($this, 'settings_link_redirect'));
+	}
 	
+	function settings_link_redirect()
+	{
+		$settings_page_url = admin_url('admin.php?page=custom-banners-settings');
+		wp_redirect($settings_page_url);
+		exit();
+	}
 }
 $ebp = new CustomBannersPlugin();

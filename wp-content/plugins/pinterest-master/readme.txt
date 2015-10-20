@@ -2,8 +2,8 @@
 Contributors: TechGasp
 Tags: wordpress, pinterest, pin-it, pin it, pin, techgasp, photo, picture, gallery, board, pinterest board, free
 Requires at least: 3.5
-Tested up to: 4.2.2
-Stable tag: 4.4.1.5
+Tested up to: 4.3
+Stable tag: 4.4.2.5
 License: GPLv2 or later
 
 Pinterest Master adds the follow me on pinterest, pin it button, show pinterest profile and show pinterest board to your wordpress website.
@@ -21,16 +21,16 @@ Both the widget and the shortcode framework are fully mobile devices responsive,
 
 **pin it for wordpress...**
 
-IMPORTANT: Makes no use of Javascipt or Ajax to keep your website clean of errors and conflicts
+> IMPORTANT: Makes no use of Javascript or Ajax to keep your website clean of errors and conflicts
 
-**LITE Version Contains:**
+**LITE Version Contains**
 
 * Fully Mobile Responsive
 * Display, Hide or Change any Widget Title
 
 * Pinterest Master Buttons Widget (Display Pinterest Follow Me Button, Display Pinterest Pin It Button (Gray or Red Button Colours), Display Pinterest Pin It Button Hover Wordpress Photos (On mouse over your photos. Gray or Red Button Colours)
 
-**ADVANCED Version Contains:**
+**ADVANCED Version Contains**
 
 * Fully Mobile Responsive
 * Pinterest Business Ready
@@ -45,7 +45,7 @@ IMPORTANT: Makes no use of Javascipt or Ajax to keep your website clean of error
 * Pinterest Master Advanced Top Pin Widget
 * Pinterest Dashboard Widget
 
-* TechGasp Shortcode Framework v3:
+* TechGasp Shortcode Framework v3
 * Universal Shortcode for all pages and posts, same Shortcode applies to all pages and posts. Option to Automatically add the shortcode to all pages and posts or manually add the pre-built shortcode individually per page or post. Option to automatically only show the shortcode in Posts and not Pages. Option to Automatically show the shortcode After the Title or After the Content.
 * Individual Shortcode for each page or post, individual customized shortcode per page or post
 * Shortcodes allow you to professionally display your plugin inside pages and posts maintaining fast page load times and excellent Google SEO
@@ -114,6 +114,27 @@ IMPORTANT: Makes no use of Javascipt or Ajax to keep your website clean of error
 
 
 == Changelog ==
+
+= 4.4.2.5 =
+* Wordpress 4.3.1
+
+= 4.4.2.4 =
+* Adding better support for https calls
+
+= 4.4.2.3 =
+* Replacing WP_WIGDET with __contruct
+
+= 4.4.2.2 =
+* Wordpress 4.3
+
+= 4.4.2.1 =
+* Wordpress 4.2.3
+* Removing name global
+
+= 4.4.2.0 =
+* Includes several important fixes and speed-up's
+* New pre-installation flight
+* New text-domain because of updater
 
 = 4.4.1.5 =
 * Wordpress 4.2 ready

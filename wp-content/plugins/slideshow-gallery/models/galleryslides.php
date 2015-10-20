@@ -1,4 +1,6 @@
 <?php
+	
+if (!defined('ABSPATH')) exit; // Exit if accessed directly
 
 class GalleryGallerySlides extends GalleryDbHelper {
 
@@ -77,5 +79,7 @@ class GalleryGallerySlides extends GalleryDbHelper {
 		return $this -> errors;
 	}
 }
+
+include_once(dirname(__FILE__) . DS . 'slideshow.php');
 
 ?>
