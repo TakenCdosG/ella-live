@@ -19,7 +19,7 @@ Version:        0.1.0
 #content .home-wardrobe { float: left; width: 100%; max-width: 360px; height: auto; }
 #content .wardrobe.first { margin-top: 50px; }
 #content .wardrobe img { display: block; border: 1px solid #000; float: left; margin-right: 15px; }
-#content p, #content li { font-size: 15px; }
+#content p, #content li { font-size: 17px; }
 
 .crellyslider-slider { padding: 1px; background: url("img/slideshow-border.png") no-repeat left top; background-size: 100% 100%; color: #000; font-weight: 300; }
 #crellyslider-1 .cs-controls,#crellyslider-2 .cs-controls { top: 45%; }
