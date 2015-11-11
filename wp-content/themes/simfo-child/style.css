@@ -55,6 +55,8 @@ Version:        0.1.0
 #ella-footer .hr { display: block; }
 #ella-footer .hr.last-hr { position: relative; top: -80px; }
 
+.box.wardrobe ul { margin-left: 60%; }
+
 /*
 * STYLES TAKEN FROM THE CUSTOMIZE SECTION OF THE CMS
 */
