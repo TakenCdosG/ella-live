@@ -839,7 +839,6 @@ div#bricon1,div#bricon2,div#bricon3,div#bricon4,div#bricon5{
 		max-width: 100%;
 	}
 	#content .home-wardrobe {
-		margin-left: 5%;
 		float: none;
 		max-width: 95%;
 	}
@@ -861,6 +860,10 @@ div#bricon1,div#bricon2,div#bricon3,div#bricon4,div#bricon5{
 }
 
 @media screen and (max-width: 480px) {
+	.widget-back-image img {
+		max-height: 460px;
+	}
+	
 	.wardrobe-sidetext {
 		float: none;
 		max-width: 100%;
@@ -872,6 +875,6 @@ div#bricon1,div#bricon2,div#bricon3,div#bricon4,div#bricon5{
 		text-indent: 0;
 	}
 	#content .wardrobe img {
-		max-width: 40%;
+		max-width: 45%;
 	}
 }
