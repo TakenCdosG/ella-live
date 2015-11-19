@@ -14,7 +14,7 @@ Version:        0.1.0
 
 #main-nav { background: url("img/nav-background.png") no-repeat center top; background-size: 94% 100%; }
 
-#content .wardrobe { background: url("img/wardrobe-bucket.png") no-repeat left top; background-size: 100% 100%; padding: 1px 85px 1px 1px; margin: 30px 0; font-family: "brandon-grotesque"; }
+#content .wardrobe { background: url("img/wardrobe-bucket.png") no-repeat left top; background-size: 100% 100%; padding: 1px 20px 1px 1px; margin: 30px 0; font-family: "brandon-grotesque"; }
 #content #page-2 .wardrobe { margin-top: 0; padding-right: 0; }
 #content .home-wardrobe { float: left; width: 100%; max-width: 360px; height: auto; }
 #content .wardrobe.first { margin-top: 50px; }
@@ -561,36 +561,6 @@ span.homeslider-button{
 }
 
 /************** RESPONSIVE ********************/
-@media screen and (max-width: 480px) {
-	#headerwrap #main-nav .menu-item-2453 a {
-		display: block;
-		width: 111px;
-		text-indent: 0;
-	}
-}
-
-@media screen and (max-width: 768px) {
-	.home .wardrobe-sidetext {
-		float: none;
-		max-width: 100%;
-	}
-	#content .home-wardrobe {
-		margin-left: 5%;
-		float: none;
-		max-width: 95%;
-	}
-	#content .home-wardrobe:after {
-		display: block;
-		content: '';
-		clear: both;
-	}
-}
-
-@media screen and (min-width: 480px) and (max-width: 768px) {
-	div.signup-form form div.collectEmailFormGroupBasic input#EmailAddress {
-		width: 155px;
-	}
-}
 
 @media screen and (min-width: 320px) and (max-width: 479px) {
     div#widget-2780.ella-wrapper div.widget-text.over-image{
@@ -860,4 +830,43 @@ div#bricon1,div#bricon2,div#bricon3,div#bricon4,div#bricon5{
     div.e-logo{
         display: none;
     }
+}
+
+/********** Added on 19/11/2015 *****************/
+@media screen and (max-width: 480px) {
+	#headerwrap #main-nav .menu-item-2453 a {
+		display: block;
+		width: 111px;
+		text-indent: 0;
+	}
+	#content .wardrobe img {
+		max-width: 40%;
+	}
+}
+
+@media screen and (max-width: 768px) {
+	.home .wardrobe-sidetext {
+		float: none;
+		max-width: 100%;
+	}
+	#content .home-wardrobe {
+		margin-left: 5%;
+		float: none;
+		max-width: 95%;
+	}
+	#content .home-wardrobe:after {
+		display: block;
+		content: '';
+		clear: both;
+	}
+	
+	#content .wardrobe img {
+		max-width: 25%;
+	}
+}
+
+@media screen and (min-width: 480px) and (max-width: 768px) {
+	div.signup-form form div.collectEmailFormGroupBasic input#EmailAddress {
+		width: 155px;
+	}
 }
