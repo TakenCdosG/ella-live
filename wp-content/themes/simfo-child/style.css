@@ -10,7 +10,7 @@ Version:        0.1.0
 
 .pagewidth { width: 1000px; }
 #main-nav .menu-item-2453 { vertical-align: middle; }
-#main-nav .menu-item-2453 a { background: url("img/shoptiques.png") no-repeat; display: block; width: 111px; height: 14px; padding-top: 0; }
+#main-nav .menu-item-2453 a { text-indent: -9999px; background: url("img/shoptiques.png") no-repeat; display: block; width: 111px; height: 14px; padding-top: 0; }
 
 #main-nav { background: url("img/nav-background.png") no-repeat center top; background-size: 94% 100%; }
 
@@ -55,7 +55,7 @@ Version:        0.1.0
 #ella-footer .hr { display: block; }
 #ella-footer .hr.last-hr { position: relative; top: -80px; }
 
-.box.wardrobe ul { margin-left: 60%; }
+.box.wardrobe ul { list-style: inside disc; }
 
 /*
 * STYLES TAKEN FROM THE CUSTOMIZE SECTION OF THE CMS
@@ -562,26 +562,33 @@ span.homeslider-button{
 
 /************** RESPONSIVE ********************/
 @media screen and (max-width: 480px) {
-	#main-nav .menu-item-2453 a {
+	#headerwrap #main-nav .menu-item-2453 a {
 		display: block;
 		width: 111px;
+		text-indent: 0;
 	}
 }
 
 @media screen and (max-width: 768px) {
-	.wardrobe-sidetext {
+	.home .wardrobe-sidetext {
 		float: none;
 		max-width: 100%;
 	}
 	#content .home-wardrobe {
-		margin-left: 15px;
+		margin-left: 5%;
 		float: none;
-		max-width: 100%;
+		max-width: 95%;
 	}
 	#content .home-wardrobe:after {
 		display: block;
 		content: '';
 		clear: both;
+	}
+}
+
+@media screen and (min-width: 480px) and (max-width: 768px) {
+	div.signup-form form div.collectEmailFormGroupBasic input#EmailAddress {
+		width: 155px;
 	}
 }
 
