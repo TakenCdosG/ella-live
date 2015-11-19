@@ -10,7 +10,7 @@ Version:        0.1.0
 
 .pagewidth { width: 1000px; }
 #main-nav .menu-item-2453 { vertical-align: middle; }
-#main-nav .menu-item-2453 a { text-indent: -9999px; background: url("img/shoptiques.png") no-repeat; display: block; width: 111px; height: 14px; padding-top: 0; }
+#main-nav .menu-item-2453 a { background: url("img/shoptiques.png") no-repeat; display: block; width: 111px; height: 14px; padding-top: 0; }
 
 #main-nav { background: url("img/nav-background.png") no-repeat center top; background-size: 94% 100%; }
 
@@ -558,6 +558,31 @@ div#widget-2771.ella-wrapper div.widget-text p span.hwt,div#widget-2794.ella-wra
 span.homeslider-button{
     color:#ffffff;
     background-color: #000000;
+}
+
+/************** RESPONSIVE ********************/
+@media screen and (max-width: 480px) {
+	#main-nav .menu-item-2453 a {
+		display: block;
+		width: 111px;
+	}
+}
+
+@media screen and (max-width: 768px) {
+	.wardrobe-sidetext {
+		float: none;
+		max-width: 100%;
+	}
+	#content .home-wardrobe {
+		margin-left: 15px;
+		float: none;
+		max-width: 100%;
+	}
+	#content .home-wardrobe:after {
+		display: block;
+		content: '';
+		clear: both;
+	}
 }
 
 @media screen and (min-width: 320px) and (max-width: 479px) {
