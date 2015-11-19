@@ -795,9 +795,12 @@ input:-moz-placeholder { color:#612b85; }
 /*
 * FEATURED BRAND ICONS ADJUSTMENTS
 */
-div#bricon1,div#bricon2,div#bricon3,div#bricon4,div#bricon5{
+/*div#bricon1,div#bricon2,div#bricon3,div#bricon4,div#bricon5{
     margin-left: 1.5% !important;
     width: 17% !important;
+}*/
+div.brand-icon {
+	width: 16.5%;
 }
 
 /*
@@ -819,9 +822,12 @@ div#bricon1,div#bricon2,div#bricon3,div#bricon4,div#bricon5{
 * BRAND ICONS REARRANGING
 */
 @media screen and (min-width: 320px) and (max-width: 600px){
-    div#bricon1,div#bricon2,div#bricon3,div#bricon4,div#bricon5{
+    /*div#bricon1,div#bricon2,div#bricon3,div#bricon4,div#bricon5{
         width: 30% !important;
-    }
+    }*/
+   	div.brand-icon {
+   		width: 30%;
+   	}
 }
 /*
 * HIDING LOGO FOR RESOLUTIONS SMALLER THAB 768
