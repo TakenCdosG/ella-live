@@ -14,7 +14,7 @@ Version:        0.1.0
 
 #main-nav { background: url("img/nav-background.png") no-repeat center top; background-size: 94% 100%; }
 
-#content .wardrobe { background: url("img/wardrobe-bucket.png") no-repeat left top; background-size: 100% 100%; padding: 1px 20px 1px 1px; margin: 30px 0; font-family: "brandon-grotesque"; }
+#content .wardrobe { background: url("img/wardrobe-bucket.png") no-repeat left top; background-size: 100% 100%; padding: 1px 20px 1px 20px; margin: 30px 0; font-family: "brandon-grotesque"; }
 #content #page-2 .wardrobe { margin-top: 0; padding-right: 0; }
 #content .home-wardrobe { float: left; width: 100%; max-width: 360px; height: auto; }
 #content .wardrobe.first { margin-top: 50px; }
