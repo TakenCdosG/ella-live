@@ -833,17 +833,6 @@ div#bricon1,div#bricon2,div#bricon3,div#bricon4,div#bricon5{
 }
 
 /********** Added on 19/11/2015 *****************/
-@media screen and (max-width: 480px) {
-	#headerwrap #main-nav .menu-item-2453 a {
-		display: block;
-		width: 111px;
-		text-indent: 0;
-	}
-	#content .wardrobe img {
-		max-width: 40%;
-	}
-}
-
 @media screen and (max-width: 768px) {
 	.home .wardrobe-sidetext {
 		float: none;
@@ -868,5 +857,21 @@ div#bricon1,div#bricon2,div#bricon3,div#bricon4,div#bricon5{
 @media screen and (min-width: 480px) and (max-width: 768px) {
 	div.signup-form form div.collectEmailFormGroupBasic input#EmailAddress {
 		width: 155px;
+	}
+}
+
+@media screen and (max-width: 480px) {
+	.wardrobe-sidetext {
+		float: none;
+		max-width: 100%;
+	}
+	
+	#headerwrap #main-nav .menu-item-2453 a {
+		display: block;
+		width: 111px;
+		text-indent: 0;
+	}
+	#content .wardrobe img {
+		max-width: 40%;
 	}
 }
