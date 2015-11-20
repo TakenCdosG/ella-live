@@ -861,7 +861,11 @@ div.brand-icon {
 
 @media screen and (min-width: 480px) and (max-width: 768px) {
 	div.signup-form form div.collectEmailFormGroupBasic input#EmailAddress {
-		width: 155px;
+		width: 78%;
+	}
+	
+	#ella-footer .top-footer {
+		height: 170px;
 	}
 }
 
