@@ -19,10 +19,10 @@
 define('DB_NAME', 'ellawher_wp');
 
 /** MySQL database username */
-define('DB_USER', 'root');
+define('DB_USER', 'ellawher_wp');
 
 /** MySQL database password */
-define('DB_PASSWORD', '');
+define('DB_PASSWORD', ':XP(Y5QX');
 
 /** MySQL hostname */
 define('DB_HOST', 'localhost');
