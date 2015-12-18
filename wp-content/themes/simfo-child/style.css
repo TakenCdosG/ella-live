@@ -572,7 +572,7 @@ span.homeslider-button{
         margin-left: 1%;
     }
     div#widget-2780.ella-wrapper div.widget-text.over-image p span,div#widget-2751.ella-wrapper div.widget-text.over-image p span{
-        font-size: 21pt;
+        font-size: 21pt !important;
     }
     div.widget-text.over-image p span.img-subt,div.widget-text p span.img-subt{
         font-size: 10pt !important;
@@ -888,5 +888,5 @@ div.brand-icon {
 		max-width: 45%;
 	}
 	
-	span.mts { font-size: 32pt; }
+	span.mts { font-size: 32pt !important; }
 }
